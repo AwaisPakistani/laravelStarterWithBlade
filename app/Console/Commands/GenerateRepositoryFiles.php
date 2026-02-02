@@ -47,13 +47,13 @@ class GenerateRepositoryFiles extends Command
                 $this->generateRepository($modelName);
 
                 // Generate Livewire Component
-                $this->generateLivewireComponent($modelName);
+                // $this->generateLivewireComponent($modelName);
 
                 // Generate Request
                 $this->generateRequest($modelName);
 
                 // Generate Livewire Blade File
-                $this->livewireBlade($modelName);
+                // $this->livewireBlade($modelName);
 
                 // Generate Model File
                 $this->model($modelName);
@@ -64,7 +64,7 @@ class GenerateRepositoryFiles extends Command
                 // Generate Seeder File
                 $this->generateSeeder($modelName);
                 // Routes
-                $this->generateRoutes($modelName);
+                // $this->generateRoutes($modelName);
         }
         if ($this->option('repository')) {
             // Generate Interface

@@ -1,0 +1,27 @@
+<?php
+
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+
+return new class extends Migration
+{
+    public function up()
+    {
+        Schema::create('modules', function (Blueprint $table) {
+            $table->id();
+            $table->foreignId('parent_id')->nullable()->constrained('modules', 'id')->cascadeOnDelete();
+            $table->string('name');
+            $table->string('slug')->nullable();
+            $table->foreignId('created_by_id')->nullable()->constrained('users','id');
+            $table->foreignId('updated_by_id')->nullable()->constrained('users','id');
+            $table->softDeletes();
+            $table->timestamps();
+        });
+    }
+
+    public function down()
+    {
+        Schema::dropIfExists('modules');
+    }
+};
