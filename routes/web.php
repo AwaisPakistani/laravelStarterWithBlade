@@ -6,7 +6,8 @@ use App\Http\Controllers\admin\{
  AuthController,
  UserController,
  RoleController,
- PermissionController
+ PermissionController,
+ ModuleController
 };
 
 
@@ -23,6 +24,7 @@ Route::middleware('AuthMiddleware')->prefix('admin')->name('admin.')->group(func
     Route::resource('users', UserController::class);
     Route::resource('roles', RoleController::class);
     Route::resource('permissions', PermissionController::class);
+    Route::resource('modules', ModuleController::class);
 });
 
 // NOt Found Route

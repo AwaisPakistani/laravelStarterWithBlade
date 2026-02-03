@@ -47,7 +47,9 @@
                          <li class="sidebar-item {{ request()->routeIs(
                             'admin.users.*',
                             'admin.roles.*',
-                            'admin.permissions.*'
+                            'admin.permissions.*',
+                            'admin.modules.*'
+
                          ) ? 'active' : '' }} has-sub">
                             <a href="#" class='sidebar-link'>
                                 <i class="bi bi-gear-fill"></i>
@@ -62,6 +64,9 @@
                                 </li>
                                 <li class="submenu-item ">
                                     <a href="{{ route('admin.permissions.index') }}">Permissions</a>
+                                </li>
+                                <li class="submenu-item ">
+                                    <a href="{{ route('admin.modules.index') }}">Modules</a>
                                 </li>
                             </ul>
                         </li>

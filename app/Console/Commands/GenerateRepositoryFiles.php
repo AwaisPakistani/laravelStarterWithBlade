@@ -76,7 +76,7 @@ class GenerateRepositoryFiles extends Command
                 // $this->generateMigration($modelName);
 
                 // Generate Seeder File
-                $this->generateSeeder($modelName);
+                // $this->generateSeeder($modelName);
                 // Routes
                 // $this->generateRoutes($modelName);
         }
