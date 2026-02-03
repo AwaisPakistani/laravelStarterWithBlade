@@ -9,12 +9,12 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 class Permission extends Model
 {
     use HasFactory;
+    protected $guarded = [];
     protected $table = 'permissions';
-
     // protected $fillable= ['name'];
-    protected $casts = [
-        'is_active' => 'boolean'
-    ];
+    // protected $casts = [
+    //     'is_active' => 'boolean'
+    // ];
     public function rolePermission()
     {
         return $this->hasMany(RolePermission::class);

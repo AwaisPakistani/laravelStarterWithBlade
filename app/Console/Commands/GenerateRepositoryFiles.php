@@ -21,7 +21,11 @@ class GenerateRepositoryFiles extends Command
                             {--migration : Generate a migration}
                             {--model : Generate a Model}
                             {--seeder : Generate a seeder}
+                            {--controller : Generate a controller}
                             {--view : Generate a view}
+                            {--index : Generate a Index view}
+                            {--create : Generate a Creaet view}
+                            {--update : Generate a Update view}
                             {--route : Generate a Route}
                             {--all : Generate all files}';
 
@@ -48,18 +52,28 @@ class GenerateRepositoryFiles extends Command
 
                 // Generate Livewire Component
                 // $this->generateLivewireComponent($modelName);
+                // Generate Controller
+                $this->generateController($modelName);
+
 
                 // Generate Request
                 $this->generateRequest($modelName);
 
                 // Generate Livewire Blade File
                 // $this->livewireBlade($modelName);
+                // Generate Blade index files
+                $this->indexBlade($modelName);
+                // Generate Blade create files
+                $this->createBlade($modelName);
+                // Generate Blade update files
+                $this->UpdateBlade($modelName);
+
 
                 // Generate Model File
-                $this->model($modelName);
+                // $this->model($modelName);
 
                 // Generate Migration File
-                $this->generateMigration($modelName);
+                // $this->generateMigration($modelName);
 
                 // Generate Seeder File
                 $this->generateSeeder($modelName);
@@ -99,10 +113,27 @@ class GenerateRepositoryFiles extends Command
              // Generate Seeder File
             $this->generateSeeder($modelName);
         }
+
+        if ($this->option('controller')) {
+            $this->generateController($modelName);
+        }
         if ($this->option('view')) {
              // Generate Livewire Blade File
             $this->livewireBlade($modelName);
         }
+        if ($this->option('index')) {
+             // Generate Livewire Blade File
+            $this->indexBlade($modelName);
+        }
+        if ($this->option('create')) {
+             // Generate Livewire Blade File
+            $this->createBlade($modelName);
+        }
+        if ($this->option('update')) {
+             // Generate Livewire Blade File
+            $this->updateBlade($modelName);
+        }
+
         if ($this->option('route')) {
             $this->generateRoutes($modelName);
         }
@@ -154,6 +185,20 @@ class GenerateRepositoryFiles extends Command
         File::put($livewireComponentPath, $stub);
     }
 
+    protected function generateController($modelName)
+    {
+        $controllerPath = app_path("Http/Controllers/admin/{$modelName}Controller.php");
+
+        if (!File::exists(dirname($controllerPath))) {
+            File::makeDirectory(dirname($controllerPath), 0755, true);
+        }
+
+        $stub = File::get(__DIR__ . '/stubs/controller.stub');
+        $stub = str_replace(['{{ModelName}}','{{modelName}}'], [$modelName,Str::camel($modelName)], $stub);
+
+        File::put($controllerPath, $stub);
+    }
+
     protected function generateRequest($modelName)
     {
         $requestPath = app_path("Http/Requests/{$modelName}Request.php");
@@ -179,6 +224,48 @@ class GenerateRepositoryFiles extends Command
         $stub = str_replace('{{ModelName}}', $modelName, $stub);
 
         File::put($livewireBladePath, $stub);
+    }
+
+    // indexBlade
+    public function indexBlade($modelName){
+         $indexBladePath = resource_path("views/admin/{$modelName}s/index.blade.php");
+
+        if (!File::exists(dirname($indexBladePath))) {
+            File::makeDirectory(dirname($indexBladePath), 0755, true);
+        }
+
+        $stub = File::get(__DIR__ . '/stubs/indexBlade.stub');
+        $stub = str_replace('{{ModelName}}', $modelName, $stub);
+
+        File::put($indexBladePath, $stub);
+    }
+
+    // createBlade
+    public function createBlade($modelName){
+         $createBladePath = resource_path("views/admin/{$modelName}s/create.blade.php");
+
+        if (!File::exists(dirname($createBladePath))) {
+            File::makeDirectory(dirname($createBladePath), 0755, true);
+        }
+
+        $stub = File::get(__DIR__ . '/stubs/createBlade.stub');
+        $stub = str_replace('{{ModelName}}', $modelName, $stub);
+
+        File::put($createBladePath, $stub);
+    }
+
+    // updateBlade
+    public function updateBlade($modelName){
+         $updateBladePath = resource_path("views/admin/{$modelName}s/edit.blade.php");
+
+        if (!File::exists(dirname($updateBladePath))) {
+            File::makeDirectory(dirname($updateBladePath), 0755, true);
+        }
+
+        $stub = File::get(__DIR__ . '/stubs/updateBlade.stub');
+        $stub = str_replace('{{ModelName}}', $modelName, $stub);
+
+        File::put($updateBladePath, $stub);
     }
 
     // Model

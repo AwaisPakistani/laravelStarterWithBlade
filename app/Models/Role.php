@@ -10,7 +10,8 @@ use Spatie\Permission\Guard;
 
 class Role extends SpatieRole
 {
-    use HasFactory, SoftDeletes;
+    use HasFactory;
+    //  SoftDeletes;
 
     /**
      * The attributes that are mass assignable.

@@ -1,0 +1,71 @@
+@extends('layout.master')
+@section('content')
+<!--style-->
+@section('style')
+<link rel="stylesheet" href="{{asset('assets/vendors/iconly/bold.css')}}">
+@stop
+<!--/style-->
+<div class="page-heading">
+    <div class="page-title">
+        <div class="row">
+            <div class="col-12 col-md-6 order-md-1 order-last">
+                <h3>Roles</h3>
+            </div>
+            <div class="col-12 col-md-6 order-md-2 order-first">
+                <nav aria-label="breadcrumb" class="breadcrumb-header float-start float-lg-end">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}">Dashboard</a></li>
+                        <li class="breadcrumb-item active" aria-current="page">Roles</li>
+                    </ol>
+                </nav>
+            </div>
+        </div>
+    </div>
+    <!-- // Basic multiple Column Form section start -->
+    <section id="multiple-column-form">
+        <div class="row match-height">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h4 class="card-title">Update Role</h4>
+                    </div>
+                    <div class="card-content">
+                        <div class="card-body">
+                            <form action="{{ route('admin.roles.update',$Role->id) }}" method="POST" class="form">
+                            @csrf
+                            @method('PUT')
+                                <div class="row">
+                                    <div class="col-md-12 col-12">
+                                        <div class="form-group">
+                                            <label for="name-column"> Name</label>
+                                            <input type="text" id="user-name-column" value="{{ old('name',$Role->name) }}" class="form-control @error('name')
+                                            is-invalid
+                                            @enderror"
+                                            placeholder="Name" name="name">
+                                            @error('name')
+                                                <div class="invalid-feedback">
+                                                    {{ $message }}
+                                                </div>
+                                            @enderror
+                                        </div>
+                                    </div>
+                                    <div class="col-12 d-flex justify-content-end">
+                                        <button type="submit"
+                                        class="btn btn-primary me-1 mb-1">Submit</button>
+                                        <button type="reset"
+                                        class="btn btn-light-secondary me-1 mb-1">Reset</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- // Basic multiple Column Form section end -->
+</div>
+@section('scripts')
+
+@stop
+@endsection

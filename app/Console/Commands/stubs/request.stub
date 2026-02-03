@@ -14,7 +14,7 @@ class {{ModelName}}Request extends FormRequest
     public function rules()
     {
         return [
-            // Define your validation rules here
+            'name' => 'required|string|max:255',
         ];
     }
 }

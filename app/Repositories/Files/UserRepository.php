@@ -2,21 +2,21 @@
 
 namespace App\Repositories\Files;
 
-use App\Models\Permission;
-use App\Repositories\Interfaces\PermissionRepositoryInterface;
+use App\Models\User;
+use App\Repositories\Interfaces\UserRepositoryInterface;
 
-class PermissionRepository implements PermissionRepositoryInterface
+class UserRepository implements UserRepositoryInterface
 {
     protected $model;
 
-    public function __construct(Permission $model)
+    public function __construct(User $model)
     {
         $this->model = $model;
     }
 
     public function all()
     {
-        return $this->model->all();
+        return $this->model->cursor();
     }
 
     public function find($id)
@@ -26,7 +26,6 @@ class PermissionRepository implements PermissionRepositoryInterface
 
     public function create(array $data)
     {
-       $data['guard_name'] = 'web';
         return $this->model->create($data);
     }
 
