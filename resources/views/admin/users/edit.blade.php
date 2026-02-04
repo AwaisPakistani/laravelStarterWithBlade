@@ -3,6 +3,7 @@
 <!--style-->
 @section('style')
 <link rel="stylesheet" href="{{asset('assets/vendors/iconly/bold.css')}}">
+<link rel="stylesheet" href="{{asset('assets/vendors/choices.js/choices.min.css')}}" />
 @stop
 <!--/style-->
 <div class="page-heading">
@@ -35,6 +36,23 @@
                             @csrf
                             @method('PUT')
                                 <div class="row">
+                                    <div class="col-md-6 mb-4">
+                                        <div class="form-group">
+                                             <label for="USER-name-column">Roles</label>
+                                            <select class="choices form-select multiple-remove" name="roles[]" multiple="multiple">
+                                                <optgroup label="Select Roles">
+                                                    @foreach ($roles as $role)
+                                                    <option value="{{ $role->id }}"
+                                                        @if(in_array($role->id, old('roles', $user->roles->pluck('id')->toArray())))
+                                                            selected
+                                                        @endif
+                                                        >{{$role->name}}</option>
+                                                    @endforeach
+                                                    </optgroup>
+                                                </optgroup>
+                                            </select>
+                                        </div>
+                                    </div>
                                     <div class="col-md-6 col-12">
                                         <div class="form-group">
                                             <label for="USER-name-column">User Name</label>
@@ -67,7 +85,7 @@
                                      <div class="col-md-6 col-12">
                                         <div class="form-group">
                                             <label for="password-id-column">Password</label>
-                                            <input type="password" value="{{ old('password',$user->password) }}" id="password-id-column" class="form-control @error('password')
+                                            <input type="password" value="{{ old('password') }}" id="password-id-column" class="form-control @error('password')
                                             is-invalid
                                             @enderror"
                                             name="password" placeholder="password">
@@ -81,7 +99,7 @@
                                     <div class="col-md-6 col-12">
                                         <div class="form-group">
                                             <label for="password-id-column">Confirm Password</label>
-                                            <input type="password" value="{{ old('confirm-password',$user->password) }}"id="confirm-password-id-column" class="form-control @error('confirm-password')
+                                            <input type="password" value="{{ old('confirm-password') }}"id="confirm-password-id-column" class="form-control @error('confirm-password')
                                             is-invalid
                                             @enderror"
                                             name="confirm-password" placeholder="Confirm-password">
@@ -109,6 +127,6 @@
     <!-- // Basic multiple Column Form section end -->
 </div>
 @section('scripts')
-
+<script src="{{asset('assets/vendors/choices.js/choices.min.js')}}"></script>
 @stop
 @endsection

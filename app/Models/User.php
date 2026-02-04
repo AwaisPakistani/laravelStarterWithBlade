@@ -51,7 +51,10 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
-
+    public function hasRole($role)
+    {
+        return $this->roles->contains('name', $role);
+    }
     /**
      * Perform pre-authorization checks on the model.
      */

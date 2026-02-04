@@ -6,6 +6,8 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Http\Requests\UserRequest;
 use App\Models\User;
+use Spatie\Permission\Models\Role;
+
 use App\Repositories\Interfaces\UserRepositoryInterface;
 
 class UserController extends Controller
@@ -28,7 +30,8 @@ class UserController extends Controller
      */
     public function create()
     {
-        return view('admin.users.create');
+        $roles = Role::cursor();
+        return view('admin.users.create',compact('roles'));
     }
 
     /**
@@ -58,7 +61,8 @@ class UserController extends Controller
      */
     public function edit(User $user)
     {
-        return view('admin.users.edit',compact('user'));
+        $roles = Role::cursor();
+        return view('admin.users.edit',compact('user','roles'));
     }
 
     /**
@@ -66,7 +70,7 @@ class UserController extends Controller
      */
     public function update(UserRequest $request, User $user)
     {
-         try {
+        try {
             $validated = $request->validated();
             $this->userinterface->update($user->id,$validated);
             return redirect()->route('admin.users.index');

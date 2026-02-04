@@ -3,6 +3,8 @@
 <!--style-->
 @section('style')
 <link rel="stylesheet" href="{{asset('assets/vendors/iconly/bold.css')}}">
+<link rel="stylesheet" href="{{asset('assets/vendors/choices.js/choices.min.css')}}" />
+
 @stop
 <!--/style-->
 <div class="page-heading">
@@ -33,6 +35,26 @@
                         <div class="card-body">
                             <form action="{{ route('admin.users.store') }}" method="POST" class="form">@csrf
                                 <div class="row">
+                                     <div class="col-md-6 mb-4">
+                                        <div class="form-group">
+                                             <label for="USER-name-column">Roles</label>
+                                            <select class="choices form-select multiple-remove @error('roles')
+                                            is-invalid
+                                            @enderror" name="roles[]" multiple="multiple">
+                                                <optgroup label="Select Roles">
+                                                    @foreach ($roles as $role)
+                                                    <option value="{{ $role->id }}">{{$role->name}}</option>
+                                                    @endforeach
+                                                    </optgroup>
+                                                </optgroup>
+                                            </select>
+                                            @error('roles')
+                                                <div class="invalid-feedback">
+                                                    {{ $message }}
+                                                </div>
+                                            @enderror
+                                        </div>
+                                    </div>
                                     <div class="col-md-6 col-12">
                                         <div class="form-group">
                                             <label for="USER-name-column">User Name</label>
@@ -107,6 +129,6 @@
     <!-- // Basic multiple Column Form section end -->
 </div>
 @section('scripts')
-
+<script src="{{asset('assets/vendors/choices.js/choices.min.js')}}"></script>
 @stop
 @endsection

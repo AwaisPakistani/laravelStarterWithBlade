@@ -21,6 +21,7 @@ Route::middleware('AuthMiddleware')->prefix('admin')->name('admin.')->group(func
     // Dashboard Routes
     Route::get('/dashboard',[DashboardController::class,'index'])->name('dashboard');
     Route::post('/logout',[AuthController::class,'logout'])->name('logout');
+    
     Route::resource('users', UserController::class);
     Route::resource('roles', RoleController::class);
     Route::resource('permissions', PermissionController::class);
