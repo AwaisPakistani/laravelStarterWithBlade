@@ -34,6 +34,7 @@ document.getElementById('warning').addEventListener('click', (e) => {
         title: "Warning"
     })
 })
+
 document.getElementById('info').addEventListener('click', (e) => {
     Swal.fire({
         icon: "info",
@@ -47,7 +48,7 @@ document.getElementById('question').addEventListener('click', (e) => {
     })
 })
 document.getElementById('text').addEventListener('click', (e) => {
- 
+
      Swal.fire({
         title: 'Enter your IP address',
         input: 'text',
@@ -57,27 +58,27 @@ document.getElementById('text').addEventListener('click', (e) => {
 
 })
 document.getElementById('email').addEventListener('click', async (e) => {
- 
+
     const { value: email } = await Swal.fire({
         title: 'Input email address',
         input: 'email',
         inputLabel: 'Your email address',
         inputPlaceholder: 'Enter your email address'
       })
-      
+
       if (email) {
         Swal.fire(`Entered email: ${email}`)
       }
 
 })
 document.getElementById('url').addEventListener('click', async (e) => {
- 
+
     const { value: url } = await Swal.fire({
         input: 'url',
         inputLabel: 'URL address',
         inputPlaceholder: 'Enter the URL'
       })
-      
+
       if (url) {
         Swal.fire(`Entered URL: ${url}`)
       }
@@ -95,11 +96,11 @@ document.getElementById('password').addEventListener('click', async (e) => {
         autocorrect: 'off'
         }
     })
-    
+
     if (password) {
         Swal.fire(`Entered password: ${password}`)
     }
-  
+
 })
 document.getElementById('textarea').addEventListener('click', async (e) => {
     const { value: text } = await Swal.fire({
@@ -111,7 +112,7 @@ document.getElementById('textarea').addEventListener('click', async (e) => {
         },
         showCancelButton: true
       })
-      
+
       if (text) {
         Swal.fire(text)
       }
@@ -146,9 +147,9 @@ document.getElementById('select').addEventListener('click', async (e) => {
           })
         }
       })
-      
+
       if (fruit) {
         Swal.fire(`You selected: ${fruit}`)
       }
-  
+
 })

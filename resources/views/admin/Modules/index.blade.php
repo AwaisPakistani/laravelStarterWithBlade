@@ -2,8 +2,9 @@
 @section('content')
 <!--style-->
 @section('style')
-<link rel="stylesheet" href="{{asset('assets/vendors/iconly/bold.css')}}">
-<link rel="stylesheet" href="{{asset('assets/vendors/simple-datatables/style.css')}}">
+<link rel="stylesheet" href={{asset('assets/vendors/iconly/bold.css')}}>
+<link rel="stylesheet" href={{asset('assets/vendors/simple-datatables/style.css')}}>
+<link rel="stylesheet" href={{asset('assets/vendors/sweetalert2/sweetalert2.min.css')}}>
 @stop
 <!--/style-->
 <div class="page-heading">
@@ -33,6 +34,8 @@
                                     <a href="{{ route('admin.modules.create') }}" class="btn btn-primary btn-outline">
                                         <span class="bi bi-plus"></span>Create
                                     </a>
+<button id="warning"
+                                                class="btn btn-outline-warning btn-lg btn-block">Warning</button>
                                 </div>
                             </div>
                         </div>
@@ -58,14 +61,21 @@
                                         <td>
                                             <a href="{{ route('admin.modules.edit',$Module->id) }}" class="btn btn-primary btn-sm"><span class="bi bi-pencil"></span></a>
                                             <a href="#" class="btn btn-success btn-sm"><span class="bi bi-eye"></span></a>
-                                            <a href="#">
+
+                                            <a href="#" id="warning"
+                                                class="btn btn-danger p-0">
                                                 <form action="{{ route('admin.modules.destroy', $Module->id) }}" method="POST">
                                                     @csrf
                                                     @method('DELETE')
-
-                                                    <button class="btn btn-danger btn-sm" type="submit"><span class="bi bi-trash"></span></button>
+                                                    <button type="submit" class="btn btn-danger btn-sm">
+                                                        <span class="bi bi-trash"></span>
+                                                    </button>
                                                 </form>
                                             </a>
+                                            <a href="#" id="warning" class="btn btn-warning btn-sm">
+                                                <span class="bi bi-eye"></span>
+                                            </a>
+
                                         </td>
                                     </tr>
                                     @empty
@@ -80,11 +90,13 @@
                 </section>
 </div>
 @section('scripts')
-<script src="{{asset('assets/vendors/simple-datatables/simple-datatables.js')}}"></script>
-    <script>
+<script src={{asset('assets/vendors/simple-datatables/simple-datatables.js')}}></script>
+<script src={{asset('assets/js/extensions/sweetalert2.js')}}></script>
+<script src={{asset('assets/vendors/sweetalert2/sweetalert2.all.min.js')}}></script>
+<script>
         // Simple Datatable
         let table1 = document.querySelector('#table1');
         let dataTable = new simpleDatatables.DataTable(table1);
-    </script>
+</script>
 @stop
 @endsection

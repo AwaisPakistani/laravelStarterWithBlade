@@ -55,6 +55,10 @@ class User extends Authenticatable
     {
         return $this->roles->contains('name', $role);
     }
+    public function hasPermission($permission)
+    {
+        return ($this->hasRole('Super Admin') ? true : $this->roles->flatMap->permissions->contains('name', $permission));
+    }
     /**
      * Perform pre-authorization checks on the model.
      */

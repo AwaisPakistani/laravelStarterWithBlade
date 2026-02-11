@@ -15,7 +15,7 @@
                 <nav aria-label="breadcrumb" class="breadcrumb-header float-start float-lg-end">
                     <ol class="breadcrumb">
                         <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}">Dashboard</a></li>
-                        <li class="breadcrumb-item active" aria-current="page">Permissions</li>
+                        <li class="breadcrumb-item active" aria-current="page"><a href="{{ url()->previous() }}">Permissions</a></li>
                     </ol>
                 </nav>
             </div>
@@ -51,8 +51,8 @@
                                     <div class="col-12 d-flex justify-content-end">
                                         <button type="submit"
                                         class="btn btn-primary me-1 mb-1">Submit</button>
-                                        <button type="reset"
-                                        class="btn btn-light-secondary me-1 mb-1">Reset</button>
+                                        <a href="{{ url()->previous() }}""
+                                        class="btn btn-light-secondary me-1 mb-1">Back</a>
                                     </div>
                                 </div>
                             </form>

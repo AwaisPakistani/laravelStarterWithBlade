@@ -3,9 +3,11 @@
 namespace App\Http\Controllers\admin;
 
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use App\Http\Requests\RoleRequest;
 use App\Models\Role;
+use App\Models\Module;
 use App\Repositories\Interfaces\RoleRepositoryInterface;
 
 class RoleController extends Controller
@@ -28,7 +30,14 @@ class RoleController extends Controller
      */
     public function create()
     {
-        return view('admin.Roles.create');
+        $authUserRole = Auth::user()->roles()->first();
+        // dd($authUserRole->toArray());
+        if ($authUserRole->name == 'Super Admin') {
+            $modules = Module::with('subModules.permissions')->whereNull('parent_id')->cursor();
+        } else {
+            $modules = Module::with('subModules.permissions')->where('id', $authUserRole->module_id)->cursor();
+        }
+        return view('admin.Roles.create',compact('modules'));
     }
 
     /**
@@ -58,7 +67,14 @@ class RoleController extends Controller
      */
     public function edit(Role $Role)
     {
-        return view('admin.Roles.edit',compact('Role'));
+        $authUserRole = Auth::user()->roles()->first();
+        // dd($authUserRole->toArray());
+        if ($authUserRole->name == 'Super Admin') {
+            $modules = Module::with('subModules.permissions')->whereNull('parent_id')->cursor();
+        } else {
+            $modules = Module::with('subModules.permissions')->where('id', $authUserRole->module_id)->cursor();
+        }
+        return view('admin.Roles.edit',compact('Role','modules'));
     }
 
     /**
