@@ -85,16 +85,11 @@
                                                     <td>
                                                      {{ $submodule->name }}
                                                     </td>
-                                                    <td>
-                                                        <div class="form-check form-switch">
-                                                            <input class="form-check-input" type="checkbox" id="flexSwitchCheckDefault">
-                                                            <label class="form-check-label" for="flexSwitchCheckDefault"></label>
-                                                        </div>
-                                                    </td>
+
                                                     @foreach ($submodule->permissions as $subindex => $permission)
                                                     <td>
-                                                        <div class="form-check form-switch">
-                                                            <input class="form-check-input" type="checkbox" id="flexSwitchCheckDefault">
+                <div class="form-check form-switch">
+                    <input class="form-check-input permissionCheckbox  {{ "$module->slug.$submodule->slug.all" == $permission->name ? 'ModuleAllCheckbox' : '' }}"name="permissions[]" type="checkbox" value="{{ $permission->id }}" id="flexSwitchCheckDefault{{ $permission->id }}" {{ in_array($permission->id, old('permissions', [])) ? 'checked' : '' }}data-permission-id="{{ $permission->id }}">
                                                             <label class="form-check-label" for="flexSwitchCheckDefault"></label>
                                                         </div>
                                                     </td>
@@ -130,6 +125,15 @@
             var isChecked = $(this).prop("checked");
             $(".form-check-input").prop("checked", isChecked);
        });
+
+
+       $(".ModuleAllCheckbox").change( function () {
+            // Get the state of the "All" checkbox in the row
+            var isChecked = $(this).prop("checked");
+
+            // Update the state of all permission checkboxes in the row accordingly
+            $(this).closest(".form-check").find(".permissionCheckbox").prop("checked", isChecked);
+        });
     });
 </script>
 @stop

@@ -23,7 +23,8 @@ class UserRequest extends FormRequest
             'email' => [
                 'required',
                 'email',
-                Rule::unique('users', 'email')->ignore($this->user->id),
+                Rule::unique('users', 'email'),
+                // ->ignore($this->user->id),
             ],
         ];
         // Conditionally apply validation rules for password based on whether it's an update or create

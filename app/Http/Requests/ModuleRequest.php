@@ -14,6 +14,7 @@ class ModuleRequest extends FormRequest
     public function rules()
     {
         return [
+            'parent_id'=>'nullable|integer',
             'name' => 'required|string|max:255',
         ];
     }

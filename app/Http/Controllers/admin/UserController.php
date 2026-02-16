@@ -42,9 +42,9 @@ class UserController extends Controller
         try {
             $validated = $request->validated();
             $this->userinterface->create($validated);
-            return redirect()->route('admin.users.index');
+            return redirect()->route('admin.users.index')->with('success_title', 'Created!')->with('success', 'User created successfully');;
         } catch (\Throwable $th) {
-            throw $th;
+            return redirect()->route('admin.users.index')->with('error_title', 'Not Created!')->with('error', 'User creation failed');;
         }
     }
 
@@ -73,9 +73,9 @@ class UserController extends Controller
         try {
             $validated = $request->validated();
             $this->userinterface->update($user->id,$validated);
-            return redirect()->route('admin.users.index');
+            return redirect()->route('admin.users.index')->with('success_title', 'Updated!')->with('success', 'User updated successfully');;
         } catch (\Throwable $th) {
-            throw $th;
+            return redirect()->route('admin.users.index')->with('error_title', 'Not Updated!')->with('error', 'User Updation failed');;
         }
     }
 
@@ -86,9 +86,11 @@ class UserController extends Controller
     {
         try {
             $this->userinterface->delete($user->id);
-            return redirect()->route('admin.users.index');
+            return redirect()
+                ->route('admin.users.index')->with('success_title', 'Deleted!')
+                ->with('success', 'Deleted successfully');
         } catch (\Throwable $th) {
-            throw $th;
+            return redirect()->route('admin.users.index')->with('error_title', 'Not Deleted!')->with('error', 'User Deletion failed');;
         }
     }
 }

@@ -56,16 +56,9 @@
                                             @statusBadge($Role->status)
                                         </td>
                                         <td>
-                                            <a href="{{ route('admin.roles.edit',$Role->id) }}" class="btn btn-primary btn-sm"><span class="bi bi-pencil"></span></a>
-                                            <a href="#" class="btn btn-success btn-sm"><span class="bi bi-eye"></span></a>
-                                            <a href="#">
-                                                <form action="{{ route('admin.roles.destroy', $Role->id) }}" method="POST">
-                                                    @csrf
-                                                    @method('DELETE')
-
-                                                    <button class="btn btn-danger btn-sm" type="submit"><span class="bi bi-trash"></span></button>
-                                                </form>
-                                            </a>
+                                             <x-action-buttons
+                                            :canEdit="auth()->user()->hasPermission('admin.roles.edit')" :canDelete="auth()->user()->hasPermission('admin.roles.destroy')" :canShow="auth()->user()->hasPermission('admin.roles.show')" :editRoute="route('admin.roles.edit',$Role)" :deleteRoute="route('admin.roles.destroy',$Role)" :showRoute="route('admin.roles.show',$Role)"
+                                            />
                                         </td>
                                     </tr>
                                     @empty

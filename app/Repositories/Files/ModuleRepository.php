@@ -3,6 +3,12 @@
 namespace App\Repositories\Files;
 
 use App\Models\Module;
+use Illuminate\Support\Str;
+use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\DB;
+use Spatie\Permission\Models\Role;
+use Spatie\Permission\Models\Permission;
+use Illuminate\Support\Facades\Log;
 use App\Repositories\Interfaces\ModuleRepositoryInterface;
 
 class ModuleRepository implements ModuleRepositoryInterface
@@ -26,7 +32,46 @@ class ModuleRepository implements ModuleRepositoryInterface
 
     public function create(array $data)
     {
-        return $this->model->create($data);
+        $module = Module::find($data['parent_id']);
+        $super_admin = Role::where('name', 'Super Admin')->first();
+
+        if (!$module) {
+            dd('Module not found');
+            return back()->with('error', 'Module Not Found.')->withInput();
+        }
+        DB::beginTransaction();
+        try {
+            $subModule = $this->model->create([
+                'name'=>$data['name'],
+                'slug'=>Str::slug($data['name']),
+                'parent_id'=>$module->id,
+            ]);
+
+            $permissions = ['index', 'create', 'show', 'edit', 'update', 'store', 'destroy', 'approve', 'download', 'all'];
+
+            $permission_array = [];
+
+            foreach ($permissions as $permission) {
+                    array_push($permission_array, [
+                        'name' => "$module->slug.$subModule->slug.$permission",
+                        'module_id' => $subModule->id,
+                        'guard_name' => 'web',
+                        'created_at' => Carbon::now(),
+                        'updated_at' => Carbon::now(),
+                    ]);
+            }
+
+            Permission::insert($permission_array);
+            $permissions = Permission::where('module_id', $subModule->id)->get();
+            $super_admin->givePermissionTo($permissions);
+            DB::commit();
+            return $data;
+        } catch (\Throwable $th) {
+            DB::rollBack();
+            Log::error('Module Creation Error : ' . $th->getMessage());
+            return back()->with('error', 'Operation Failed Contact To IT Team.');
+        }
+
     }
 
     public function update($id, array $data)

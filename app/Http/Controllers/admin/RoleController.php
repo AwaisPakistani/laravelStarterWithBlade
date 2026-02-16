@@ -4,6 +4,8 @@ namespace App\Http\Controllers\admin;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Http\Request;
 use App\Http\Requests\RoleRequest;
 use App\Models\Role;
@@ -45,12 +47,16 @@ class RoleController extends Controller
      */
     public function store(RoleRequest $request)
     {
+        DB::beginTransaction();
         try {
             $validated = $request->validated();
             $this->Roleinterface->create($validated);
-            return redirect()->route('admin.roles.index');
+            DB::commit();
+            return redirect()->route('admin.roles.index')->with('success_title', 'Created!')->with('success','Role Created successfully');
         } catch (\Throwable $th) {
-            throw $th;
+            DB::rollBack();
+            Log::error($th->getMessage());
+            return redirect()->back()->with('error_title', 'Not Created!')->with('error', 'Role Creation failed');
         }
     }
 
@@ -85,9 +91,9 @@ class RoleController extends Controller
          try {
             $validated = $request->validated();
             $this->Roleinterface->update($Role->id,$validated);
-            return redirect()->route('admin.roles.index');
+            return redirect()->route('admin.roles.index')->with('success_title', 'Updated!')->with('success','Role Updated successfully');;
         } catch (\Throwable $th) {
-            throw $th;
+            return redirect()->back()->with('error_title', 'Not Updated!')->with('error', 'Role Updation failed');;
         }
     }
 
@@ -98,9 +104,9 @@ class RoleController extends Controller
     {
         try {
             $this->Roleinterface->delete($Role->id);
-            return redirect()->route('admin.roles.index');
+            return redirect()->route('admin.roles.index')->with('success_title', 'Deleted!')->with('success','Role Deleted successfully');;
         } catch (\Throwable $th) {
-            throw $th;
+            return redirect()->back()->with('error_title', 'Not Deletd!')->with('error', 'Role Deletion failed');;
         }
     }
 }

@@ -39,7 +39,7 @@ class PermissionController extends Controller
         try {
             $validated = $request->validated();
             $this->Permissioninterface->create($validated);
-            return redirect()->route('admin.permissions.index');
+            return redirect()->route('admin.permissions.index')->with('success_title', 'Created!')->with('success','Permission Created successfully');
         } catch (\Throwable $th) {
             throw $th;
         }
@@ -69,7 +69,7 @@ class PermissionController extends Controller
          try {
             $validated = $request->validated();
             $this->Permissioninterface->update($Permission->id,$validated);
-            return redirect()->route('admin.permissions.index');
+            return redirect()->route('admin.permissions.index')->with('success_title', 'Updated!')->with('success','Permission Updated successfully');
         } catch (\Throwable $th) {
             throw $th;
         }
@@ -82,7 +82,7 @@ class PermissionController extends Controller
     {
         try {
             $this->Permissioninterface->delete($Permission->id);
-            return redirect()->route('admin.permissions.index');
+            return redirect()->route('admin.permissions.index')->with('success_title', 'Deleted!')->with('success','Permission Deleted successfully');
         } catch (\Throwable $th) {
             throw $th;
         }

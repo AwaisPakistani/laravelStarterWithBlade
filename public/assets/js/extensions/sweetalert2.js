@@ -1,5 +1,9 @@
 document.getElementById('basic').addEventListener('click', (e) => {
-    Swal.fire('Any fool can use a computer')
+    // Swal.fire('Any fool can use a computer')
+    Swal.fire({
+        icon: "warning",
+        title: "Are you sure?"
+    })
 })
 document.getElementById('footer').addEventListener('click', (e) => {
     Swal.fire({

@@ -56,16 +56,9 @@
                                             @statusBadge($Permission->status)
                                         </td>
                                         <td>
-                                            <a href="{{ route('admin.permissions.edit',$Permission->id) }}" class="btn btn-primary btn-sm"><span class="bi bi-pencil"></span></a>
-                                            <a href="#" class="btn btn-success btn-sm"><span class="bi bi-eye"></span></a>
-                                            <a href="#">
-                                                <form action="{{ route('admin.permissions.destroy', $Permission->id) }}" method="POST">
-                                                    @csrf
-                                                    @method('DELETE')
-
-                                                    <button class="btn btn-danger btn-sm" type="submit"><span class="bi bi-trash"></span></button>
-                                                </form>
-                                            </a>
+                                         <x-action-buttons
+                                            :canEdit="auth()->user()->hasPermission('admin.permissions.edit')" :canDelete="auth()->user()->hasPermission('admin.permissions.destroy')" :canShow="auth()->user()->hasPermission('admin.permissions.show')" :editRoute="route('admin.permissions.edit',$Permission)" :deleteRoute="route('admin.permissions.destroy',$Permission)" :showRoute="route('admin.permissions.show',$Permission)"
+                                            />
                                         </td>
                                     </tr>
                                     @empty

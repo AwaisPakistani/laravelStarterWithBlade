@@ -28,7 +28,7 @@ class ModuleController extends Controller
      */
     public function create()
     {
-        $modules = Module::cursor();
+        $modules = Module::whereNull('parent_id')->cursor();
         return view('admin.Modules.create',compact('modules'));
     }
 
@@ -40,7 +40,7 @@ class ModuleController extends Controller
         try {
             $validated = $request->validated();
             $this->Moduleinterface->create($validated);
-            return redirect()->route('admin.modules.index');
+            return redirect()->route('admin.modules.index')->with('success_title', 'Created!')->with('success','Module Created successfully');
         } catch (\Throwable $th) {
             throw $th;
         }
@@ -71,7 +71,7 @@ class ModuleController extends Controller
          try {
             $validated = $request->validated();
             $this->Moduleinterface->update($Module->id,$validated);
-            return redirect()->route('admin.modules.index');
+            return redirect()->route('admin.modules.index')->with('success_title', 'Updated!')->with('success','Module Updated successfully');
         } catch (\Throwable $th) {
             throw $th;
         }
@@ -84,7 +84,7 @@ class ModuleController extends Controller
     {
         try {
             $this->Moduleinterface->delete($Module->id);
-            return redirect()->route('admin.modules.index');
+            return redirect()->route('admin.modules.index')->with('success_title', 'Deleted!')->with('success','Module Deleted successfully');
         } catch (\Throwable $th) {
             throw $th;
         }

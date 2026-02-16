@@ -58,16 +58,6 @@
                                             @statusBadge($user->status)
                                         </td>
                                         <td>
-                                            {{-- <a href="{{ route('admin.users.edit',$user->id) }}" class="btn btn-primary btn-sm"><span class="bi bi-pencil"></span></a>
-                                            <a href="#" class="btn btn-success btn-sm"><span class="bi bi-eye"></span></a> --}}
-                                            {{-- <a href="#">
-                                                <form action="{{ route('admin.users.destroy', $user->id) }}" method="POST">
-                                                    @csrf
-                                                    @method('DELETE')
-
-                                                    <button class="btn btn-danger btn-sm" type="submit"><span class="bi bi-trash"></span></button>
-                                                </form>
-                                            </a> --}}
                                             <x-action-buttons
                                             :canEdit="auth()->user()->hasPermission('admin.users.edit')" :canDelete="auth()->user()->hasPermission('admin.users.destroy')" :canShow="auth()->user()->hasPermission('admin.users.show')" :editRoute="route('admin.users.edit',$user)" :deleteRoute="route('admin.users.destroy',$user)" :showRoute="route('admin.users.show',$user)"
                                             />

@@ -3,7 +3,7 @@
                 <div class="sidebar-header">
                     <div class="d-flex justify-content-between">
                         <div class="logo">
-                            <a href="index.html"><img src="assets/images/logo/logo.png" alt="Logo" srcset=""></a>
+                            <a href="index.html"><img src="{{asset('assets/images/logo/logo.png')}}" alt="Logo" srcset=""></a>
                         </div>
                         <div class="toggler">
                             <a href="#" class="sidebar-hide d-xl-none d-block"><i class="bi bi-x bi-middle"></i></a>
@@ -21,7 +21,7 @@
                             </a>
                         </li>
 
-                        <li class="sidebar-item has-sub">
+                        {{-- <li class="sidebar-item has-sub">
                             <a href="#" class='sidebar-link'>
                                 <i class="bi bi-grid-1x2-fill"></i>
                                 <span>Layouts</span>
@@ -31,7 +31,7 @@
                                     <a href="layout-default.html">Default Layout</a>
                                 </li>
                             </ul>
-                        </li>
+                        </li> --}}
                          <li class="sidebar-item {{ request()->routeIs(
                             'admin.users.*',
                             'admin.roles.*',
@@ -63,4 +63,4 @@
                 </div>
                 <button class="sidebar-toggler btn x"><i data-feather="x"></i></button>
             </div>
-        </div>
+</div>

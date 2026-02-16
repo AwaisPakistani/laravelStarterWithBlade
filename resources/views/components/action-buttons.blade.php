@@ -1,3 +1,6 @@
+@section('style')
+<link rel="stylesheet" href="{{asset('assets/vendors/sweetalert2/sweetalert2.min.css')}}">
+@stop
 @props([
     'canEdit' => false,
     'canDelete' => false,
@@ -25,13 +28,69 @@
         <a href="{{ $editRoute }}" class="btn btn-success btn-sm me-2" title="Edit"><span class="bi bi-pencil"></span></a>
     @endif
     @if ($canDelete)
-        <form method="POST" action="{{ $deleteRoute }}">
+        <form method="POST" action="{{ $deleteRoute }}" class="delete-form d-inline">
             @csrf
             @method('DELETE')
-            <a class="btn btn-danger btn-sm" onclick="confirmOrDeniDelete(event)" href="#">
-                <span><span class="bi bi-trash"></span></span>
-            </a>
+            <button type="button" class="btn btn-danger btn-sm btn-delete">
+                    <span class="bi bi-trash"></span>
+            </button>
         </form>
     @endif
 </div>
+@section('scripts')
+    <script src="{{asset('assets/js/extensions/sweetalert2.js')}}"></script>
+    <script src="{{asset('assets/vendors/sweetalert2/sweetalert2.all.min.js')}}"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const deleteButtons = document.querySelectorAll('.btn-delete');
 
+        deleteButtons.forEach(button => {
+            button.addEventListener('click', function () {
+                let form = this.closest('form');
+
+                Swal.fire({
+                    title: 'Are you sure?',
+                    text: "This record will be permanently deleted.",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#d33',
+                    cancelButtonColor: '#6c757d',
+                    confirmButtonText: 'Yes, delete it!',
+                    cancelButtonText: 'Cancel'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        form.submit();
+                    }
+                });
+            });
+        });
+    });
+  </script>
+   @if(session('success'))
+   <script>
+    document.addEventListener('DOMContentLoaded', function () {
+        Swal.fire({
+            icon: 'success',
+            title: '{{ session('success_title', 'Success') }}',
+            text: '{{ session('success') }}',
+            timer: 5000,
+            showConfirmButton: true
+        });
+    });
+   </script>
+   @endif
+   @if(session('error'))
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            Swal.fire({
+                icon: 'error',
+                title: '{{ session('error_title', 'Success') }}',
+                text: '{{ session('error') }}',
+                timer: 5000,
+                showConfirmButton: true
+            });
+        });
+   </script>
+   @endif
+
+@stop
