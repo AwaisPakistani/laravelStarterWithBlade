@@ -39,6 +39,15 @@
                         </div>
 
                         <div class="card-body">
+                             {{-- In your users/index.blade.php or similar --}}
+                            <div class="d-flex justify-content-between align-items-center mb-3">
+                                {{-- Per page selector --}}
+                               <x-no-of-pages
+                               perPageRoute="{{ route('admin.modules.index') }}"
+                               />
+                                {{-- Your existing search component --}}
+                                <x-search-record searchRoute="{{ route('admin.modules.index') }}" />
+                            </div>
                             <table class="table table-striped" id="table1">
                                 <thead>
                                     <tr>
@@ -72,6 +81,11 @@
 
                                 </tbody>
                             </table>
+                             <div class="row">
+                                <div class="col-md-12 text-right">
+                                {{ $allRecords->withQueryString()->links() }}
+                                </div>
+                            </div>
                         </div>
                     </div>
 

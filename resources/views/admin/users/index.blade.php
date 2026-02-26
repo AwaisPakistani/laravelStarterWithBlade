@@ -37,12 +37,22 @@
                             </div>
                         </div>
                         <div class="card-body">
+                            {{-- In your users/index.blade.php or similar --}}
+                            <div class="d-flex justify-content-between align-items-center mb-3">
+                                {{-- Per page selector --}}
+                               <x-no-of-pages
+                               perPageRoute="{{ route('admin.users.index') }}"
+                               />
+                                {{-- Your existing search component --}}
+                                <x-search-record searchRoute="{{ route('admin.users.index') }}" />
+                            </div>
                             <table class="table table-striped" id="table1">
                                 <thead>
                                     <tr>
                                         <th>Sr#</th>
                                         <th>Name</th>
                                         <th>Email</th>
+                                        <th>Role</th>
                                         <th>Status</th>
                                         <th>Actions</th>
                                     </tr>
@@ -54,6 +64,7 @@
                                          {{$loop->iteration}}</td>
                                         <td>{{$user->name}}</td>
                                         <td>{{$user->email}}</td>
+                                        <td>{{ $user->roles[0]->name??'' }}</td>
                                         <td>
                                             @statusBadge($user->status)
                                         </td>
@@ -66,18 +77,21 @@
                                     @empty
                                     Data Not Found
                                     @endforelse
+
                                 </tbody>
                             </table>
+                             <div class="row">
+                                <div class="col-md-12 text-right">
+                                {{ $allRecords->withQueryString()->links() }}
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </section>
 </div>
 @section('scripts')
-<script src="{{asset('assets/vendors/simple-datatables/simple-datatables.js')}}"></script>
-    <script>
-        // Simple Datatable
-        let table1 = document.querySelector('#table1');
-        let dataTable = new simpleDatatables.DataTable(table1);
-    </script>
+<script>
+
+</script>
 @stop
 @endsection

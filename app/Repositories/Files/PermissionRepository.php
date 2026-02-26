@@ -4,7 +4,9 @@ namespace App\Repositories\Files;
 
 use App\Models\Permission;
 use App\Repositories\Interfaces\PermissionRepositoryInterface;
-
+use Illuminate\Contracts\Pagination\LengthAwarePaginator;
+use Illuminate\Supports\Collection;
+use Illuminate\Support\Facades\Request as NewRequest;
 class PermissionRepository implements PermissionRepositoryInterface
 {
     protected $model;
@@ -19,6 +21,17 @@ class PermissionRepository implements PermissionRepositoryInterface
         return $this->model->all();
     }
 
+    public function paginate(int $perpage= 10) : LengthAwarePaginator
+    {
+        $search = NewRequest::input('search');
+        $perpageRecords = NewRequest::input('perPage', $perpage); // Use input value or default
+        return $this->model
+        ->newQuery()
+        ->latest()
+        // ->active()
+        ->when($search, fn ($query, $search) =>$query->search($search))
+        ->paginate($perpageRecords);
+    }
     public function find($id)
     {
         return $this->model->findOrFail($id);

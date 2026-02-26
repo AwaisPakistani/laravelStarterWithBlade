@@ -18,7 +18,6 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-
         $this->autoBindRepositories();
     }
 
@@ -27,6 +26,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+
         Blade::directive('statusBadge', function ($status) {
             return "<?php if ($status == 1): ?>
                 <span class=\"badge bg-success\">Active</span>
@@ -45,6 +45,7 @@ class AppServiceProvider extends ServiceProvider
         // Gate::after(function ($user, $ability) {
         // return $user->hasRole('Super Admin'); // note this returns boolean
         // });
+        Paginator::useBootstrapFive();
     }
     /**
     * Automatically bind repository interfaces with their implementations

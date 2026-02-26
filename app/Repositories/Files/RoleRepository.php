@@ -7,7 +7,9 @@ use Illuminate\Support\Facades\Log;
 use App\Models\Role;
 use App\Models\RolePermission;
 use App\Repositories\Interfaces\RoleRepositoryInterface;
-
+use Illuminate\Contracts\Pagination\LengthAwarePaginator;
+use Illuminate\Supports\Collection;
+use Illuminate\Support\Facades\Request as NewRequest;
 class RoleRepository implements RoleRepositoryInterface
 {
     protected $model;
@@ -22,6 +24,17 @@ class RoleRepository implements RoleRepositoryInterface
         return $this->model->all();
     }
 
+    public function paginate(int $perpage= 10) : LengthAwarePaginator
+    {
+        $search = NewRequest::input('search');
+        $perpageRecords = NewRequest::input('perPage', $perpage); // Use input value or default
+        return $this->model
+        ->newQuery()
+        ->latest()
+        // ->active()
+        ->when($search, fn ($query, $search) =>$query->search($search))
+        ->paginate($perpageRecords);
+    }
     public function find($id)
     {
         return $this->model->findOrFail($id);

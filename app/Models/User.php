@@ -7,6 +7,9 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Spatie\Permission\Traits\HasRoles;
+use App\Traits\ScopeTrait;
+use App\Traits\creator;
+use App\Traits\updator;
 // use Laravel\Sanctum\HasApiTokens;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -14,7 +17,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class User extends Authenticatable
 {
     /** @use HasFactory<\Database\Factories\UserFactory> */
-    use HasFactory, Notifiable, HasRoles;
+    use HasFactory, Notifiable, HasRoles,ScopeTrait,creator,updator;
     // use HasApiTokens;
 
 
@@ -62,6 +65,15 @@ class User extends Authenticatable
     /**
      * Perform pre-authorization checks on the model.
      */
+    public function scopeSearch($query, $search)
+    {
+        return $query->whereAny(
+            ['name', 'email'],
+            'like',
+            "%{$search}%"
+        );
+    }
+
     public function before(User $user, string $ability): ?bool
     {
         if ($user->hasRole('Super Admin')) {

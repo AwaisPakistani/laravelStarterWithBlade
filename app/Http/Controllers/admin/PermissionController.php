@@ -19,7 +19,7 @@ class PermissionController extends Controller
     }
     public function index()
     {
-        $allRecords = $this->Permissioninterface->all();
+        $allRecords = $this->Permissioninterface->paginate(10);
         return view('admin.Permissions.index', compact('allRecords'));
     }
 

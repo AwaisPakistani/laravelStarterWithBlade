@@ -19,7 +19,7 @@ class ModuleController extends Controller
     }
     public function index()
     {
-        $allRecords = $this->Moduleinterface->all();
+        $allRecords = $this->Moduleinterface->paginate(10);
         return view('admin.Modules.index', compact('allRecords'));
     }
 

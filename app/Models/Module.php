@@ -26,4 +26,12 @@ class Module extends Model
     {
         return $this->belongsTo(Module::class, 'parent_id', 'id');
     }
+    public function scopeSearch($query, $search)
+    {
+        return $query->whereAny(
+            ['name', 'slug'],
+            'like',
+            "%{$search}%"
+        );
+    }
 }

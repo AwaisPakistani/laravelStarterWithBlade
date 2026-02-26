@@ -21,7 +21,7 @@ class UserController extends Controller
     }
     public function index()
     {
-        $allRecords = $this->userinterface->all();
+        $allRecords = $this->userinterface->paginate(10);
         return view('admin.users.index', compact('allRecords'));
     }
 
@@ -53,7 +53,9 @@ class UserController extends Controller
      */
     public function show(string $id)
     {
-        //
+        $user = $this->userinterface->find($id);
+        $roles = Role::cursor();
+        return view('admin.users.show',compact('user','roles'));
     }
 
     /**

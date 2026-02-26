@@ -4,6 +4,10 @@ namespace App\Repositories\Files;
 
 use App\Models\User;
 use Spatie\Permission\Models\Role;
+use Illuminate\Contracts\Pagination\LengthAwarePaginator;
+use Illuminate\Supports\Collection;
+use Illuminate\Support\Facades\Request as NewRequest;
+
 use App\Repositories\Interfaces\UserRepositoryInterface;
 
 class UserRepository implements UserRepositoryInterface
@@ -17,10 +21,22 @@ class UserRepository implements UserRepositoryInterface
 
     public function all()
     {
-        return $this->model->cursor();
+        return $this->model->latest()->cursor();
     }
 
-    public function find($id)
+    public function paginate(int $perpage= 10) : LengthAwarePaginator
+    {
+        $search = NewRequest::input('search');
+        $perpageRecords = NewRequest::input('perPage', $perpage); // Use input value or default
+        return $this->model
+        ->newQuery()
+        ->latest()
+        ->active()
+        ->when($search, fn ($query, $search) =>$query->search($search))
+        ->paginate($perpageRecords);
+    }
+
+    public function find(int $id)
     {
         return $this->model->findOrFail($id);
     }

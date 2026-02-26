@@ -26,4 +26,12 @@ class Role extends SpatieRole
     {
         return $this->hasMany(ModelHasRole::class, 'role_id', 'id');
     }
+    public function scopeSearch($query, $search)
+    {
+        return $query->whereAny(
+            ['name'],
+            'like',
+            "%{$search}%"
+        );
+    }
 }

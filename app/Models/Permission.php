@@ -19,4 +19,14 @@ class Permission extends Model
     {
         return $this->hasMany(RolePermission::class);
     }
+    public function scopeSearch($query, $search)
+    {
+        return $query->whereAny(
+            ['name'],
+            'like',
+            "%{$search}%"
+        );
+    }
+
+
 }

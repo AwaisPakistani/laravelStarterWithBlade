@@ -23,7 +23,7 @@ class RoleController extends Controller
     }
     public function index()
     {
-        $allRecords = $this->Roleinterface->all();
+        $allRecords = $this->Roleinterface->paginate(10);
         return view('admin.Roles.index', compact('allRecords'));
     }
 
