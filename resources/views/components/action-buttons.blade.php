@@ -15,7 +15,7 @@
 ])
 <div class="d-flex align-item-center">
     @if ($canShow)
-        <a href="{{ $showRoute }}" class="btn btn-info btn-sm me-2" title="View"><span class="bi bi-eye"></span></a>
+        <a href="{{ $showRoute }}" class="btn btn-secondary btn-sm me-2" title="View"><span class="bi bi-eye"></span></a>
     @endif
     @if ($canApprove)
         <a href="{{ $approveRoute }}" class="btn btn-dark btn-sm me-2">Approve</a>

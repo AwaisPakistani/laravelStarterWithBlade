@@ -1,13 +1,14 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\ExportController;
 use App\Http\Controllers\admin\{
  DashboardController,
  AuthController,
  UserController,
  RoleController,
  PermissionController,
- ModuleController
+ ModuleController,
 };
 
 
@@ -28,6 +29,14 @@ Route::middleware('AuthMiddleware')->prefix('admin')->name('admin.')->group(func
     Route::resource('roles', RoleController::class);
     Route::resource('permissions', PermissionController::class);
     Route::resource('modules', ModuleController::class);
+
+    // Export routes
+    Route::get('/exports', [ExportController::class, 'index'])->name('exports.index');
+    Route::post('/exports/users', [ExportController::class, 'exportUsers'])->name('exports.users');
+    Route::get('/exports/{export}/status', [ExportController::class, 'status'])->name('exports.status');
+
+    // Alternative: Direct export with filters
+    Route::get('/admin/users/export', [ExportController::class, 'exportUsers'])->name('admin.users.export');
 });
 
 // NOt Found Route
