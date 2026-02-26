@@ -17,21 +17,22 @@ class UserExport extends BaseExport
         $baseQuery = User::query()
             ->with(['roles']) // Eager load relationships
             ->latest();
-        return $baseQuery;
+        // return $baseQuery;
         // Use Spatie Query Builder for advanced filtering
-        // return QueryBuilder::for($baseQuery)
-        //     ->allowedFilters([
-        //         AllowedFilter::partial('name'),
-        //         AllowedFilter::partial('email'),
-        //         AllowedFilter::exact('is_active'),
-        //         AllowedFilter::scope('created_between'), // Custom scope
-        //         AllowedFilter::callback('role', function ($query, $value) {
-        //             $query->whereHas('roles', fn($q) => $q->where('name', $value));
-        //         }),
-        //     ])
-        //     ->allowedSorts(['name', 'email', 'created_at', 'updated_at'])
-        //     ->defaultSort('-created_at')
-        //     ->getQuery();
+        return QueryBuilder::for($baseQuery)
+            ->allowedFilters([
+                AllowedFilter::partial('name'),
+                AllowedFilter::partial('email'),
+                AllowedFilter::exact('is_active'),
+                AllowedFilter::scope('created_between'), // Custom scope
+                AllowedFilter::callback('role', function ($query, $value) {
+                    $query->whereHas('roles', fn($q) => $q->where('name', $value));
+                }),
+            ])
+            ->allowedSorts(['name', 'email', 'created_at', 'updated_at'])
+            ->defaultSort('-created_at')
+            // ->getQuery();
+            ->getEloquentBuilder();
     }
 
     /**
@@ -45,7 +46,7 @@ class UserExport extends BaseExport
             'Email',
             'Roles',
             'Status',
-            'Last Login',
+            // 'Last Login',
             'Created At',
             'Updated At',
         ];
@@ -75,8 +76,8 @@ class UserExport extends BaseExport
             $user->name,
             $user->email,
             $roles, // Now this is a string, not a collection
-            $user->is_active ? 'Active' : 'Inactive',
-            $user->last_login_at?->format('Y-m-d H:i:s') ?? 'Never',
+            $user->status==1 ? 'Active' : 'Inactive',
+            // $user->last_login_at?->format('Y-m-d H:i:s') ?? 'Never',
             $user->created_at->format('Y-m-d H:i:s'),
             $user->updated_at->format('Y-m-d H:i:s'),
         ];
@@ -94,8 +95,8 @@ class UserExport extends BaseExport
                 'name' => $user->name,
                 'email' => $user->email,
                 'roles' => $user->roles->pluck('name')->implode(', '),
-                'status' => $user->is_active ? 'Active' : 'Inactive',
-                'last_login' => $user->last_login_at?->format('Y-m-d H:i:s'),
+                'status' => $user->status ==1 ? 'Active' : 'Inactive',
+                // 'last_login' => $user->last_login_at?->format('Y-m-d H:i:s'),
                 'created_at' => $user->created_at->format('Y-m-d H:i:s'),
                 'updated_at' => $user->updated_at->format('Y-m-d H:i:s'),
                 default => 'N/A',

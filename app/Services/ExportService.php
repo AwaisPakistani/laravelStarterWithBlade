@@ -100,10 +100,17 @@ class ExportService
     protected function exportToPdf(BaseExport $export, Request $request)
     {
         $data = $export->query()->get();
+
+        // Get headings from the export class
         $headings = $export->headings();
 
+        // Map the data using the export's map method
+        $mappedData = $data->map(function ($item) use ($export) {
+            return $export->map($item);
+        });
+
         $pdf = Pdf::loadView('admin.exports.pdf-template', [
-            'data' => $data,
+            'data' => $mappedData, // Use already mapped data
             'headings' => $headings,
             'title' => class_basename($export),
             'filters' => $request->input('filters', []),

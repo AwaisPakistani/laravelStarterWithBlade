@@ -78,13 +78,9 @@
         <tbody>
             @foreach($data as $row)
                 <tr>
-                    @if(method_exists($row, 'toArray'))
-                        @foreach($row as $value)
-                            <td>{{ $value }}</td>
-                        @endforeach
-                    @else
-                        <td>{{ implode('</td><td>', (array)$row) }}</td>
-                    @endif
+                    @foreach($row as $value)
+                        <td>{{ is_array($value) ? implode(', ', $value) : $value }}</td>
+                    @endforeach
                 </tr>
             @endforeach
         </tbody>
