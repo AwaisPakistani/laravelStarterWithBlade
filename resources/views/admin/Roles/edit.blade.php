@@ -32,12 +32,12 @@
                     <div class="card-content">
                         <div class="card-body">
                             <form action="{{ route('admin.roles.update',$Role->id) }}" method="POST" class="form">
-                            @csrf
-                            @method('PUT')
+                                @csrf
+                                @method('PUT')
                                 <div class="row">
                                     <div class="col-md-4 col-12">
                                         <div class="form-group">
-                                            <label for="name-column"> Name</label>
+                                            <label for="title-column"> Name*</label>
                                             <input type="text" id="user-name-column" value="{{ old('name',$Role->name) }}" class="form-control @error('name')
                                             is-invalid
                                             @enderror"
@@ -49,7 +49,6 @@
                                             @enderror
                                         </div>
                                     </div>
-
                                      <!-- table responsive -->
                                     <div class="table-responsive">
                                         <table class="table mb-0">
@@ -88,66 +87,15 @@
                                                     <td>
                                                      {{ $submodule->name }}
                                                     </td>
+
+                                                    @foreach ($submodule->permissions as $subindex => $permission)
                                                     <td>
-                                                        <div class="form-check form-switch">
-                                                            <input class="form-check-input" type="checkbox" id="flexSwitchCheckDefault">
+                <div class="form-check form-switch">
+                    <input class="form-check-input permissionCheckbox  {{ "$module->slug.$submodule->slug.all" == $permission->name ? 'ModuleAllCheckbox' : '' }}"name="permissions[]" type="checkbox" value="{{ $permission->id }}" id="flexSwitchCheckDefault{{ $permission->id }}" {{ in_array($permission->id, old('permissions', [])) ? 'checked' : '' }}data-permission-id="{{ $permission->id }}">
                                                             <label class="form-check-label" for="flexSwitchCheckDefault"></label>
                                                         </div>
                                                     </td>
-                                                    <td>
-                                                        <div class="form-check form-switch">
-                                                            <input class="form-check-input" type="checkbox" id="flexSwitchCheckDefault">
-                                                            <label class="form-check-label" for="flexSwitchCheckDefault"></label>
-                                                        </div>
-                                                    </td>
-                                                    <td>
-                                                        <div class="form-check form-switch">
-                                                        <input class="form-check-input" type="checkbox" id="flexSwitchCheckDefault">
-                                                        <label class="form-check-label" for="flexSwitchCheckDefault"></label>
-                                                    </div>
-                                                    </td>
-                                                    <td>
-                                                        <div class="form-check form-switch">
-                                                        <input class="form-check-input" type="checkbox" id="flexSwitchCheckDefault">
-                                                        <label class="form-check-label" for="flexSwitchCheckDefault"></label>
-                                                    </div>
-                                                    </td>
-                                                    <td>
-                                                        <div class="form-check form-switch">
-                                                        <input class="form-check-input" type="checkbox" id="flexSwitchCheckDefault">
-                                                        <label class="form-check-label" for="flexSwitchCheckDefault"></label>
-                                                    </div>
-                                                    </td>
-                                                    <td>
-                                                        <div class="form-check form-switch">
-                                                        <input class="form-check-input" type="checkbox" id="flexSwitchCheckDefault">
-                                                        <label class="form-check-label" for="flexSwitchCheckDefault"></label>
-                                                    </div>
-                                                    </td>
-                                                    <td>
-                                                        <div class="form-check form-switch">
-                                                        <input class="form-check-input" type="checkbox" id="flexSwitchCheckDefault">
-                                                        <label class="form-check-label" for="flexSwitchCheckDefault"></label>
-                                                    </div>
-                                                    </td>
-                                                    <td>
-                                                        <div class="form-check form-switch">
-                                                        <input class="form-check-input" type="checkbox" id="flexSwitchCheckDefault">
-                                                        <label class="form-check-label" for="flexSwitchCheckDefault"></label>
-                                                    </div>
-                                                    </td>
-                                                    <td>
-                                                        <div class="form-check form-switch">
-                                                        <input class="form-check-input" type="checkbox" id="flexSwitchCheckDefault">
-                                                        <label class="form-check-label" for="flexSwitchCheckDefault"></label>
-                                                    </div>
-                                                    </td>
-                                                    <td>
-                                                        <div class="form-check form-switch">
-                                                        <input class="form-check-input" type="checkbox" id="flexSwitchCheckDefault">
-                                                        <label class="form-check-label" for="flexSwitchCheckDefault"></label>
-                                                    </div>
-                                                    </td>
+                                                    @endforeach
                                                 </tr>
                                                 @endforeach
                                             @endforeach
@@ -157,10 +105,11 @@
                                     <div class="col-12 d-flex justify-content-end">
                                         <button type="submit"
                                         class="btn btn-primary me-1 mb-1">Submit</button>
-                                        <a href="{{ url()->previous() }}""
+                                         <a href="{{ url()->previous() }}""
                                         class="btn btn-light-secondary me-1 mb-1">Back</a>
                                     </div>
                                 </div>
+
                             </form>
                         </div>
                     </div>
@@ -171,6 +120,23 @@
     <!-- // Basic multiple Column Form section end -->
 </div>
 @section('scripts')
+<script src={{asset('assets/vendors/jquery/jquery.min.js')}}></script>
+<script>
+    $(document).ready(function(){
+       $("#checkAll").change( function () {
+            var isChecked = $(this).prop("checked");
+            $(".form-check-input").prop("checked", isChecked);
+       });
 
+
+       $(".ModuleAllCheckbox").change( function () {
+            // Get the state of the "All" checkbox in the row
+            var isChecked = $(this).prop("checked");
+
+            // Update the state of all permission checkboxes in the row accordingly
+            $(this).closest(".form-check").find(".permissionCheckbox").prop("checked", isChecked);
+        });
+    });
+</script>
 @stop
 @endsection

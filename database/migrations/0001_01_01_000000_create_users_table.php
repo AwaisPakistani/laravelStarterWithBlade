@@ -20,6 +20,18 @@ return new class extends Migration
             $table->rememberToken();
             $table->tinyInteger('status')->default(1)->comment('1 => Active, 0 => Blocked');
             $table->timestamp('last_access')->nullable();
+            // Socialite
+
+            $table->string('github_id')->nullable()->unique();
+            $table->string('github_token')->nullable();
+            $table->string('github_refresh_token')->nullable();
+
+            $table->string('google_id')->nullable()->unique();
+            $table->string('google_token')->nullable();
+            $table->string('google_refresh_token')->nullable();
+
+            $table->string('avatar')->nullable();
+            // dates
             $table->foreignId('created_by')->nullable()->constrained('users', 'id');
             $table->foreignId('updated_by')->nullable()->constrained('users', 'id');
             $table->timestamps();
@@ -49,5 +61,12 @@ return new class extends Migration
         Schema::dropIfExists('users');
         Schema::dropIfExists('password_reset_tokens');
         Schema::dropIfExists('sessions');
+        Schema::table('users', function (Blueprint $table) {
+            $table->dropColumn([
+                'github_id', 'github_token', 'github_refresh_token',
+                'google_id', 'google_token', 'google_refresh_token',
+                'avatar'
+            ]);
+        });
     }
 };

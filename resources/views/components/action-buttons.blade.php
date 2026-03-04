@@ -84,7 +84,7 @@
         document.addEventListener('DOMContentLoaded', function () {
             Swal.fire({
                 icon: 'error',
-                title: '{{ session('error_title', 'Success') }}',
+                title: '{{ session('error_title', 'Error') }}',
                 text: '{{ session('error') }}',
                 timer: 5000,
                 showConfirmButton: true

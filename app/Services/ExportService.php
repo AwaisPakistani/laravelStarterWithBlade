@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\Exports\BaseExport;
 use Illuminate\Http\Request;
+use App\Models\Export;
 use Maatwebsite\Excel\Facades\Excel;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Support\Facades\Storage;
@@ -75,6 +76,9 @@ class ExportService
             'export_id' => $exportRecord->id,
             'status_url' => route('admin.exports.status', $exportRecord->id),
         ]);
+        // return redirect()->route('admin.exports.index')
+        // ->with('success_title', 'Queued!')
+        // ->with('success', "Export queued successfully (Export id: {$exportRecord->id})");
     }
 
     /**

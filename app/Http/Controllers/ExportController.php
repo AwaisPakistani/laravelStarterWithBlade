@@ -7,9 +7,11 @@ use App\Services\ExportService;
 use App\Models\Export;
 use Illuminate\Http\Request;
 use Spatie\QueryBuilder\QueryBuilder;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 
 class ExportController extends Controller
 {
+    use AuthorizesRequests;
     protected ExportService $exportService;
 
     public function __construct(ExportService $exportService)
@@ -42,6 +44,7 @@ class ExportController extends Controller
      */
     public function status(Export $export)
     {
+        // dd($export);
         $this->authorize('view', $export);
 
         return response()->json([
@@ -61,8 +64,10 @@ class ExportController extends Controller
     {
         $exports = QueryBuilder::for(Export::where('user_id', auth()->id()))
             ->allowedFilters(['status', 'format'])
-            ->allowedSorts(['created_at', 'completed_at'])
-            ->paginate(20);
+            // ->allowedSorts(['created_at', 'completed_at'])
+            ->allowedSorts(['created_at'])
+
+            ->paginate(10);
 
         return view('admin.exports.index', compact('exports'));
     }

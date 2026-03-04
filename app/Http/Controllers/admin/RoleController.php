@@ -88,10 +88,11 @@ class RoleController extends Controller
      */
     public function update(RoleRequest $request, Role $Role)
     {
+        // dd($request->all());
          try {
             $validated = $request->validated();
             $this->Roleinterface->update($Role->id,$validated);
-            return redirect()->route('admin.roles.index')->with('success_title', 'Updated!')->with('success','Role Updated successfully');;
+            return redirect()->route('admin.roles.index')->with('success_title', 'Updated!')->with('success','Role Updated successfully');
         } catch (\Throwable $th) {
             return redirect()->back()->with('error_title', 'Not Updated!')->with('error', 'Role Updation failed');;
         }

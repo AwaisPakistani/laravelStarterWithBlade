@@ -9,6 +9,7 @@ use App\Http\Controllers\admin\{
  RoleController,
  PermissionController,
  ModuleController,
+ SocialiteController,
 };
 
 
@@ -21,6 +22,20 @@ Route::get('/test', function () {
 //Authentication Routes
 Route::get('admin/login',[AuthController::class,'login'])->name('admin.login');
 Route::post('admin/login',[AuthController::class,'authenticate'])->name('admin.authenticate');
+
+// Socialite Routes
+// GitHub routes
+Route::get('/auth/github/redirect', [SocialiteController::class, 'redirectToGithub']);
+Route::get('/auth/github/callback', [SocialiteController::class, 'handleGithubCallback']);
+
+// Google routes
+Route::get('/auth/google/redirect', [SocialiteController::class, 'redirectToGoogle']);
+Route::get('/auth/google/callback', [SocialiteController::class, 'handleGoogleCallback']);
+
+// Generic redirect (optional)
+Route::get('/auth/{provider}/redirect', [SocialiteController::class, 'redirect']);
+Route::get('/auth/{provider}/callback', [SocialiteController::class, 'callback']);
+
 Route::middleware('AuthMiddleware')->prefix('admin')->name('admin.')->group(function(){
     // Dashboard Routes
     Route::get('/dashboard',[DashboardController::class,'index'])->name('dashboard');
@@ -32,11 +47,14 @@ Route::middleware('AuthMiddleware')->prefix('admin')->name('admin.')->group(func
 
     // Export routes
     Route::get('/exports', [ExportController::class, 'index'])->name('exports.index');
+    // Export users
     Route::post('/exports/users', [ExportController::class, 'exportUsers'])->name('exports.users');
+
     Route::get('/exports/{export}/status', [ExportController::class, 'status'])->name('exports.status');
 
     // Alternative: Direct export with filters
     Route::get('/admin/users/export', [ExportController::class, 'exportUsers'])->name('admin.users.export');
+
 });
 
 // NOt Found Route

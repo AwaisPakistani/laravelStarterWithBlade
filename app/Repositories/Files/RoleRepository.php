@@ -82,8 +82,33 @@ class RoleRepository implements RoleRepositoryInterface
     public function update($id, array $data)
     {
         $model = $this->model->findOrFail($id);
-        $model->update($data);
-        return $model;
+        $authUserRole = Auth::user()->roles()->first();
+        $existRole = $this->model->where('name', $data['name'])
+        ->where('id', '!=', $id) // Exclude current role
+        ->exists();
+        if ($existRole) {
+            return back()->with('error', 'Role Already Exist.')->withInput();
+        }
+        DB::beginTransaction();
+        try {
+            $model->update([
+                'name' => $data['name'],
+                'module_id' => $data['module_id'] ?? $authUserRole->module_id,
+                'guard_name' => 'web'
+            ]);
+            // Use sync for permissions if you have relationship set up
+            if (isset($data['permissions'])) {
+                $model->permissions()->sync($data['permissions']);
+            } else {
+                $model->permissions()->sync([]); // Remove all permissions if none selected
+            }
+            DB::commit();
+            return $data;
+        } catch (\Throwable $th) {
+            DB::rollBack();
+            Log::error($th->getMessage());
+            return back()->with('error', 'Your Operation Failed. Contact IT Team.')->withInput();
+        }
     }
 
     public function delete($id)
