@@ -3,8 +3,6 @@
 namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
-use Illuminate\Support\Facades\Blade;
-use Illuminate\Support\Facades\Gate;
 use App\Services\DateFormatConverter;
 use Illuminate\Support\Str;
 use RecursiveDirectoryIterator;
@@ -26,25 +24,6 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-
-        Blade::directive('statusBadge', function ($status) {
-            return "<?php if ($status == 1): ?>
-                <span class=\"badge bg-success\">Active</span>
-            <?php else: ?>
-                <span class=\"badge bg-danger\">Inactive</span>
-            <?php endif; ?>";
-        });
-        // Implicitly grant "Super Admin" role all permissions
-        // This works in the app by using gate-related functions like auth()->user->can() and @can()
-    Gate::before(function ($user, $ability) {
-        return $user->hasRole('Super Admin') ? true : null;
-    });
-
-        // somewhere in a service provider
-
-        // Gate::after(function ($user, $ability) {
-        // return $user->hasRole('Super Admin'); // note this returns boolean
-        // });
         Paginator::useBootstrapFive();
     }
     /**

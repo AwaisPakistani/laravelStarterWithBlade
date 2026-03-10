@@ -23,7 +23,6 @@
                     </div>
                     <h1 class="auth-title">Log in</h1>
                     <p class="auth-subtitle mb-1">Log in with your data that you entered during registration.</p>
-
                     <form action="{{ route('admin.authenticate') }}" method="POST">@csrf
                         <div class="form-group position-relative has-icon-left mb-4">
                             <input type="email" class="form-control form-control-xl" name="email" placeholder="Username">
@@ -53,39 +52,32 @@
 
                         <div class="row">
                             <div class="col-md-4">
-                                 <button class="btn btn-primary btn-block btn-lg shadow-lg mt-2">Log in</button>
+                                 <button class="btn btn-primary btn-block btn-lg shadow-lg mt-5">Log in</button>
                             </div>
                             <div class="col-md-4">
                                 {{-- <a href="{{ url('/auth/github/redirect') }}" class="btn btn-github">
                                     <i class="fab fa-github"></i> GitHub
                                 </a> --}}
-                                <a href="{{ url('/auth/google/redirect') }}" class="btn btn-google btn-block btn-lg shadow-lg mt-2">
-                                    <i class="fab fa-google"></i> Google
+                                <a href="{{ url('/auth/google/redirect') }}" class="btn btn-primary btn-block btn-lg shadow-lg mt-5" title="Login Using Gmail Account">
+                                    <i class="bi bi-google"></i>
                                 </a>
                             </div>
                             <div class="col-md-4">
-
                                 {{-- Generic version --}}
-                                <a href="{{ url('/auth/github/redirect') }}" class="btn btn-social btn-block btn-lg shadow-lg mt-2">
-                                    <i class="fab fa-github"></i> GitHub
+                                <a href="{{ url('/auth/github/redirect') }}" class="btn btn-dark btn-block btn-lg shadow-lg mt-5" title="Login using Github">
+                                    <i class="bi bi-github"></i>
                                 </a>
                             </div>
-                        </div>
-
-
-
-
-
-                    </form>
-                    <div class="text-center mt-2 text-lg fs-7">
+                        </div></form>
+                    <div class="text-center mt-2 text-lg fs-7 mt-5">
                         <p><a class="font-bold" href="auth-forgot-password.html">Forgot password?</a>.</p>
                     </div>
                 </div>
             </div>
             <div class="col-lg-7 d-none d-lg-block">
                 <div id="auth-right" style="background-image: url('{{ url('assets/images/loginImage.jpg') }}'); background-size: cover; background-position: center; background-repeat: no-repeat; height: 100vh;">
-        <!-- No img tag needed -->
-    </div>
+                <!-- No img tag needed -->
+                </div>
             </div>
         </div>
 

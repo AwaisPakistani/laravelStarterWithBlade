@@ -10,6 +10,8 @@ use Illuminate\Http\Request;
 use App\Http\Requests\RoleRequest;
 use App\Models\Role;
 use App\Models\Module;
+use Illuminate\Support\Facades\Gate;
+
 use App\Repositories\Interfaces\RoleRepositoryInterface;
 
 class RoleController extends Controller
@@ -23,8 +25,13 @@ class RoleController extends Controller
     }
     public function index()
     {
-        $allRecords = $this->Roleinterface->paginate(10);
-        return view('admin.Roles.index', compact('allRecords'));
+        $response = Gate::inspect('edit-settings');
+        if ($response->allowed()) {
+            $allRecords = $this->Roleinterface->paginate(10);
+            return view('admin.Roles.index', compact('allRecords'));
+        } else {
+            return view('admin.errors.forbidden', compact('response'));
+        }
     }
 
     /**

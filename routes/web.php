@@ -1,5 +1,4 @@
 <?php
-
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ExportController;
 use App\Http\Controllers\admin\{
@@ -12,10 +11,10 @@ use App\Http\Controllers\admin\{
  SocialiteController,
 };
 
-
-Route::get('/', function () {
-    return view('admin.auth.login');
-});
+// Route::get('/', function () {
+//     return view('admin.auth.login');
+// });
+Route::get('/',[AuthController::class,'login'])->name('admin.login');
 Route::get('/test', function () {
     return view('admin.auth.test');
 });
@@ -31,30 +30,34 @@ Route::get('/auth/github/callback', [SocialiteController::class, 'handleGithubCa
 // Google routes
 Route::get('/auth/google/redirect', [SocialiteController::class, 'redirectToGoogle']);
 Route::get('/auth/google/callback', [SocialiteController::class, 'handleGoogleCallback']);
-
 // Generic redirect (optional)
 Route::get('/auth/{provider}/redirect', [SocialiteController::class, 'redirect']);
 Route::get('/auth/{provider}/callback', [SocialiteController::class, 'callback']);
-
-Route::middleware('AuthMiddleware')->prefix('admin')->name('admin.')->group(function(){
+Route::prefix('admin')->name('admin.')->group(function(){
     // Dashboard Routes
     Route::get('/dashboard',[DashboardController::class,'index'])->name('dashboard');
     Route::post('/logout',[AuthController::class,'logout'])->name('logout');
-    Route::resource('users', UserController::class);
-    Route::resource('roles', RoleController::class);
-    Route::resource('permissions', PermissionController::class);
-    Route::resource('modules', ModuleController::class);
+    Route::get('unauthorized',function(){
+        return view('admin.errors.forbidden');
+    })->name('unauthorized');
+    Route::middleware(['AuthMiddleware'])->group(function () {
+            Route::middleware(['PermissionMiddleware'])->group(function () {
+                Route::resource('users', UserController::class);
+                Route::resource('roles', RoleController::class);
+                Route::resource('permissions', PermissionController::class);
+                Route::resource('modules', ModuleController::class);
 
-    // Export routes
-    Route::get('/exports', [ExportController::class, 'index'])->name('exports.index');
-    // Export users
-    Route::post('/exports/users', [ExportController::class, 'exportUsers'])->name('exports.users');
+                // Export routes
+                Route::get('/exports', [ExportController::class, 'index'])->name('exports.index');
+                // Export users
+                Route::post('/exports/users', [ExportController::class, 'exportUsers'])->name('exports.users');
 
-    Route::get('/exports/{export}/status', [ExportController::class, 'status'])->name('exports.status');
+                Route::get('/exports/{export}/status', [ExportController::class, 'status'])->name('exports.status');
 
-    // Alternative: Direct export with filters
-    Route::get('/admin/users/export', [ExportController::class, 'exportUsers'])->name('admin.users.export');
-
+                // Alternative: Direct export with filters
+                Route::get('/admin/users/export', [ExportController::class, 'exportUsers'])->name('admin.users.export');
+            });
+    });
 });
 
 // NOt Found Route

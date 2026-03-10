@@ -21,7 +21,10 @@
                 <img class="img-error" src="{{asset('assets/images/samples/error-403.png')}}" alt="Not Found">
                 <div class="text-center">
                     <h1 class="error-title">Forbidden</h1>
-                    <p class="fs-5 text-gray-600">You are unauthorized to see this page.</p>
+                    <p class="fs-5 text-gray-600">
+                        {{-- You are unauthorized to see this page. --}}
+                        {{ $response?->message()??'UnAuthorized! You have no permission to access this route' }}
+                    </p>
                     <a href="{{ url()->previous() }}" class="btn btn-lg btn-outline-primary mt-3">Go Home</a>
                 </div>
             </div>

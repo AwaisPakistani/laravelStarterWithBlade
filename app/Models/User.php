@@ -82,4 +82,8 @@ class User extends Authenticatable
 
         return null; // see the note above in Gate::before about why null must be returned here.
     }
+    public function isAdmin()
+    {
+        return $this->hasRole('Nida');
+    }
 }
