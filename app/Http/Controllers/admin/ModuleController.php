@@ -6,6 +6,8 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Http\Requests\ModuleRequest;
 use App\Models\Module;
+use Illuminate\Support\Facades\Gate;
+
 use App\Repositories\Interfaces\ModuleRepositoryInterface;
 
 class ModuleController extends Controller
@@ -19,6 +21,19 @@ class ModuleController extends Controller
     }
     public function index()
     {
+        // Gate::authorize('GateSuperAdmin'); // it also returns 403 page
+        // Same as
+        // if(Gate::allows('GateSuperAdmin')){
+        //     //
+        // }else{
+        //     //
+        // }
+        // For multiple gates conditions check use 'any' like
+        // if(Gate::any(['GateSuperAdmin','another-gate'])){
+        //     //
+        // }else{
+        //     //
+        // }
         $allRecords = $this->Moduleinterface->paginate(10);
         return view('admin.Modules.index', compact('allRecords'));
     }

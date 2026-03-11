@@ -21,17 +21,17 @@
                             </a>
                         </li>
 
-                        {{-- <li class="sidebar-item has-sub">
+                        <li class="sidebar-item has-sub">
                             <a href="#" class='sidebar-link'>
                                 <i class="bi bi-grid-1x2-fill"></i>
-                                <span>Layouts</span>
+                                <span>Administration</span>
                             </a>
                             <ul class="submenu active">
                                 <li class="submenu-item ">
-                                    <a href="layout-default.html">Default Layout</a>
+                                    <a href="{{ route('admin.posts.index')}}">Posts</a>
                                 </li>
                             </ul>
-                        </li> --}}
+                        </li>
                          <li class="sidebar-item {{ request()->routeIs(
                             'admin.users.*',
                             'admin.roles.*',

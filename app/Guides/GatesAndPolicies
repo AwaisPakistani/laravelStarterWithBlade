@@ -1,0 +1,6 @@
+1. Gates add policies work for same purpose like naked shoes anywhere in  the larval app like routes controllers middleware blades and services.
+2. Difference between parties that that Gates can you use globally for
+   everything while for some large apps we can use these permissions as
+   policies to make seperate policy class using ( php artisan make:policy policyName) then we'll use all permissions here for specific models.
+3. Main difference is that Gates can be define just in providers files
+   while for policy we can make seperate class

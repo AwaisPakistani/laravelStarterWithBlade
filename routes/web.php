@@ -9,6 +9,7 @@ use App\Http\Controllers\admin\{
  PermissionController,
  ModuleController,
  SocialiteController,
+ PostController,
 };
 
 // Route::get('/', function () {
@@ -34,29 +35,47 @@ Route::get('/auth/google/callback', [SocialiteController::class, 'handleGoogleCa
 Route::get('/auth/{provider}/redirect', [SocialiteController::class, 'redirect']);
 Route::get('/auth/{provider}/callback', [SocialiteController::class, 'callback']);
 Route::prefix('admin')->name('admin.')->group(function(){
-    // Dashboard Routes
-    Route::get('/dashboard',[DashboardController::class,'index'])->name('dashboard');
-    Route::post('/logout',[AuthController::class,'logout'])->name('logout');
-    Route::get('unauthorized',function(){
-        return view('admin.errors.forbidden');
-    })->name('unauthorized');
+
     Route::middleware(['AuthMiddleware'])->group(function () {
-            Route::middleware(['PermissionMiddleware'])->group(function () {
-                Route::resource('users', UserController::class);
-                Route::resource('roles', RoleController::class);
-                Route::resource('permissions', PermissionController::class);
-                Route::resource('modules', ModuleController::class);
+         // Dashboard Routes
+        Route::get('/dashboard',[DashboardController::class,'index'])->name('dashboard');
+        // My Profile
+        // Route::get('my-profile/{id}', function ($id) {
+        //    return view('admin.auth.profile');
+        // })
+        // ->name('my-profile')
+        // ->can('view-my-profile');
+        // or
+        Route::get('my-profile/{id}',[AuthController::class,'profile'])->name('my-profile');
+        // Above route is Gate Check either it's you or not
+        Route::post('/logout',[AuthController::class,'logout'])->name('logout');
+        Route::get('unauthorized',function(){
+            return view('admin.errors.forbidden');
+        })->name('unauthorized');
+        // posts
+        Route::resource('posts', PostController::class);
+        // policy use for test
+        // Route::get('all-posts',[PostController::class,'showAll'])->middleware('can:view'); // policy for single methods
+        // Route::get('all-posts',[PostController::class,'showAll'])->middleware('can:view,update,delete');// policy for multiple methods
+        // Route::get('all-posts',[PostController::class,'showAll'])->can('view,update,delete');// policy using can except middleware
+        Route::middleware(['PermissionMiddleware'])->group(function () {
+            Route::resource('users', UserController::class);
+            Route::resource('roles', RoleController::class);
+            Route::resource('permissions', PermissionController::class);
+            Route::resource('modules', ModuleController::class);
+            // Export routes
+            Route::get('/exports', [ExportController::class, 'index'])->name('exports.index')->middleware('can:GateSuperAdmin'); // here middleware is not middleware using middleware here just for check Gate
+            // Route::get('/exports', [ExportController::class, 'index'])->name('exports.index')->can('GateSuperAdmin');
+            // Alternatively for GAtes except middleware we can also use 'can' like above example
+            // Export users
+             Route::post('/exports/users', [ExportController::class, 'exportUsers'])->name('exports.users');
 
-                // Export routes
-                Route::get('/exports', [ExportController::class, 'index'])->name('exports.index');
-                // Export users
-                Route::post('/exports/users', [ExportController::class, 'exportUsers'])->name('exports.users');
+            Route::get('/exports/{export}/status', [ExportController::class, 'status'])->name('exports.status');
 
-                Route::get('/exports/{export}/status', [ExportController::class, 'status'])->name('exports.status');
+            // Alternative: Direct export with filters
+            Route::get('/admin/users/export', [ExportController::class, 'exportUsers'])->name('admin.users.export');
 
-                // Alternative: Direct export with filters
-                Route::get('/admin/users/export', [ExportController::class, 'exportUsers'])->name('admin.users.export');
-            });
+        });
     });
 });
 

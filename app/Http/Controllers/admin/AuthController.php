@@ -2,18 +2,20 @@
 
 namespace App\Http\Controllers\admin;
 
-use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
-use App\Http\Requests\LoginRequest;
-use Illuminate\Support\Facades\Auth;
-use App\Models\User;
-use Carbon\Carbon;
-use App\Events\SystemNotificationEvent;
+use Illuminate\Http\{RedirectResponse, Request};
+use Illuminate\Support\Facades\{Auth, Gate};
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Http\RedirectResponse;
+use App\Http\Controllers\Controller;
+use App\Http\Requests\LoginRequest;
+use App\Models\User;
+use App\Events\SystemNotificationEvent;
+use Carbon\Carbon;
 class AuthController extends Controller
 {
     public function login(){
+        if (Auth::check()) {
+            return view('admin.landing');
+        }
         return view('admin.auth.login');
     }
     public function authenticate(LoginRequest $request): RedirectResponse
@@ -46,7 +48,10 @@ class AuthController extends Controller
             'email' => 'The provided credentials do not match our records.',
         ])->onlyInput('email');
     }
-
+    public function profile(int $id){
+        Gate::authorize('view-my-profile',$id);
+        return view('admin.auth.profile');
+    }
     public function logout(Request $request): RedirectResponse
     {
         Auth::logout();

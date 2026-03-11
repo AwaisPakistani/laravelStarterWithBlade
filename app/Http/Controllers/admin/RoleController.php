@@ -25,13 +25,14 @@ class RoleController extends Controller
     }
     public function index()
     {
-        $response = Gate::inspect('edit-settings');
-        if ($response->allowed()) {
-            $allRecords = $this->Roleinterface->paginate(10);
-            return view('admin.Roles.index', compact('allRecords'));
-        } else {
-            return view('admin.errors.forbidden', compact('response'));
-        }
+        return view('admin.Roles.index', compact('allRecords'));
+        // $response = Gate::inspect('rolesAccess');
+        // if ($response->allowed()) {
+        //     $allRecords = $this->Roleinterface->paginate(10);
+        //     return view('admin.Roles.index', compact('allRecords'));
+        // } else {
+        //     return view('admin.errors.forbidden', compact('response'));
+        // }
     }
 
     /**

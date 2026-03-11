@@ -6,6 +6,5 @@ use Illuminate\Database\Eloquent\Model;
 
 class Post extends Model
 {
-    protected $connection = 'tenant';
-    protected $fillable = ['title', 'body'];
+    protected $fillable= ['title','description','created_by','updated_by'];
 }
