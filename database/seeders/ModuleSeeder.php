@@ -3,9 +3,8 @@
 namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
+use Illuminate\Support\{Carbon, Str};
 use App\Models\Module;
-use Illuminate\Support\Str;
-use Illuminate\Support\Carbon;
 class ModuleSeeder extends Seeder
 {
     public function run()
@@ -31,6 +30,9 @@ class ModuleSeeder extends Seeder
                 'parent_id' => 2, //admin Module
                 'modules' => [
                     'Admin Dashboard',
+                    'Users',
+                    'Roles',
+                    'Posts',
                 ]
             ],
             [

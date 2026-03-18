@@ -4,7 +4,7 @@ namespace App\Repositories\Files;
 
 use App\Models\User;
 use Spatie\Permission\Models\Role;
-use Illuminate\Contracts\Pagination\LengthAwarePaginator;
+use Illuminate\Contracts\Pagination\Paginator;
 use Illuminate\Supports\Collection;
 use Illuminate\Support\Facades\Request as NewRequest;
 
@@ -24,7 +24,7 @@ class UserRepository implements UserRepositoryInterface
         return $this->model->latest()->cursor();
     }
 
-    public function paginate(int $perpage= 10) : LengthAwarePaginator
+    public function paginate(int $perpage= 10) : Paginator
     {
         $search = NewRequest::input('search');
         $perpageRecords = NewRequest::input('perPage', $perpage); // Use input value or default

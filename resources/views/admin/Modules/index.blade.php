@@ -54,6 +54,7 @@
                                         <th>Sr#</th>
                                         <th>Parent</th>
                                         <th>Name</th>
+                                        <th>Slug</th>
                                         <th>Status</th>
                                         <th>Actions</th>
                                     </tr>
@@ -65,6 +66,8 @@
                                          {{$loop->iteration}}</td>
                                          <td>{{$Module->parent?->name}}</td>
                                         <td>{{$Module->name}}</td>
+                                        <td>{{$Module->slug}}</td>
+
                                         <td>
                                             @statusBadge($Module->status)
                                         </td>

@@ -67,15 +67,17 @@ Route::prefix('admin')->name('admin.')->group(function(){
             Route::get('/exports', [ExportController::class, 'index'])->name('exports.index')->middleware('can:GateSuperAdmin'); // here middleware is not middleware using middleware here just for check Gate
             // Route::get('/exports', [ExportController::class, 'index'])->name('exports.index')->can('GateSuperAdmin');
             // Alternatively for GAtes except middleware we can also use 'can' like above example
-            // Export users
-             Route::post('/exports/users', [ExportController::class, 'exportUsers'])->name('exports.users');
 
-            Route::get('/exports/{export}/status', [ExportController::class, 'status'])->name('exports.status');
-
-            // Alternative: Direct export with filters
-            Route::get('/admin/users/export', [ExportController::class, 'exportUsers'])->name('admin.users.export');
 
         });
+
+        // Export users
+        Route::post('/exports/users', [ExportController::class, 'exportUsers'])->name('exports.users');
+
+        Route::get('/exports/{export}/status', [ExportController::class, 'status'])->name('exports.status');
+
+        // Alternative: Direct export with filters
+        Route::get('/admin/users/export', [ExportController::class, 'exportUsers'])->name('admin.users.export');
     });
 });
 

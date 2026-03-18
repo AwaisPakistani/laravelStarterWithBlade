@@ -5,6 +5,7 @@
 <link rel="stylesheet" href="{{asset('assets/vendors/iconly/bold.css')}}">
 @stop
 <!--/style-->
+
 <div class="page-heading">
     <div class="page-title">
         <div class="row">
@@ -84,14 +85,16 @@
                                                 </tr>
                                                 @foreach ($module->subModules as $index2=>$submodule)
                                                 <tr>
+
                                                     <td>
                                                      {{ $submodule->name }}
                                                     </td>
-
                                                     @foreach ($submodule->permissions as $subindex => $permission)
                                                     <td>
-                <div class="form-check form-switch">
-                    <input class="form-check-input permissionCheckbox  {{ "$module->slug.$submodule->slug.all" == $permission->name ? 'ModuleAllCheckbox' : '' }}"name="permissions[]" type="checkbox" value="{{ $permission->id }}" id="flexSwitchCheckDefault{{ $permission->id }}" {{ in_array($permission->id, old('permissions', [])) ? 'checked' : '' }}data-permission-id="{{ $permission->id }}">
+                                                        {{-- @dump($permission) --}}
+                                <div class="form-check form-switch">
+<input class="form-check-input permissionCheckbox  {{ "$module->slug.$submodule->slug.all" == $permission->name ? 'ModuleAllCheckbox' : '' }}"name="permissions[]" type="checkbox" value="{{ $permission->id }}" id="flexSwitchCheckDefault{{ $permission->id }}" {{ in_array($permission->id, old('permissions', [])) ? 'checked' : '' }}data-permission-id="{{ $permission->id }}" {{ $permission->is_active==1 ? 'checked' : '' }}
+                                                            >
                                                             <label class="form-check-label" for="flexSwitchCheckDefault"></label>
                                                         </div>
                                                     </td>

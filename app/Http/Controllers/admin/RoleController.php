@@ -2,16 +2,11 @@
 
 namespace App\Http\Controllers\admin;
 
-use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\{Auth, DB, Gate, Log};
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
 use App\Http\Requests\RoleRequest;
-use App\Models\Role;
-use App\Models\Module;
-use Illuminate\Support\Facades\Gate;
-
+use App\Models\{Module, Role};
 use App\Repositories\Interfaces\RoleRepositoryInterface;
 
 class RoleController extends Controller
@@ -25,6 +20,7 @@ class RoleController extends Controller
     }
     public function index()
     {
+        $allRecords = $this->Roleinterface->paginate(10);
         return view('admin.Roles.index', compact('allRecords'));
         // $response = Gate::inspect('rolesAccess');
         // if ($response->allowed()) {
@@ -84,10 +80,21 @@ class RoleController extends Controller
         $authUserRole = Auth::user()->roles()->first();
         // dd($authUserRole->toArray());
         if ($authUserRole->name == 'Super Admin') {
-            $modules = Module::with('subModules.permissions')->whereNull('parent_id')->cursor();
+             $modules = Module::whereNull('parent_id')->with(['subModules.permissions' => function ($query) use ($Role) {
+                $query->withCount(['rolePermission as is_active' => function ($query) use ($Role) {
+                    $query->where('role_id', $Role->id);
+                }]);
+            }])->get();
         } else {
             $modules = Module::with('subModules.permissions')->where('id', $authUserRole->module_id)->cursor();
+
+            $modules = Module::where('id', $authUserRole->module_id)->with(['subModules.permissions' => function ($query) use ($Role) {
+                $query->withCount(['rolePermission as is_active' => function ($query) use ($Role) {
+                    $query->where('role_id', $Role->id);
+                }]);
+            }])->get();
         }
+        // dd($modules->subModules);
         return view('admin.Roles.edit',compact('Role','modules'));
     }
 

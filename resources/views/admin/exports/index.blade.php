@@ -148,7 +148,7 @@
                                 <td>
                                     @if($export->download_url)
                                         <a href="{{ $export->download_url }}" class="btn btn-sm btn-success">
-                                            <i class="fas fa-download"></i>
+                                            <i class="bi bi-download"></i>
                                         </a>
                                     @endif
                                 </td>

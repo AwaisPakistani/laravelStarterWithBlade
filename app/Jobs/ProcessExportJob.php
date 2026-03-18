@@ -2,16 +2,14 @@
 
 namespace App\Jobs;
 
-use App\Exports\BaseExport;
-use App\Models\Export;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
-use Illuminate\Queue\InteractsWithQueue;
-use Illuminate\Queue\SerializesModels;
+use Illuminate\Queue\{InteractsWithQueue, SerializesModels};
+use Illuminate\Support\Facades\{Log, Storage};
+use App\Exports\BaseExport;
+use App\Models\Export;
 use Maatwebsite\Excel\Facades\Excel;
-use Illuminate\Support\Facades\Storage;
-use Illuminate\Support\Facades\Log;
 class ProcessExportJob implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
@@ -45,12 +43,12 @@ class ProcessExportJob implements ShouldQueue
             // Store the export
             $path = 'exports/' . $this->fileName;
             Excel::store($this->export, $path, 'public');
-
+            $downloadurl= asset('storage/' . $path);
             // Update record with download URL
             $exportRecord->update([
                 'status' => 'completed',
                 'file_path' => $path,
-                'download_url' => Storage::url($path),
+                'download_url' => $downloadurl,
                 'completed_at' => now(),
             ]);
 

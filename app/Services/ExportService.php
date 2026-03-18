@@ -51,12 +51,40 @@ class ExportService
     /**
      * Queue export for background processing (large datasets)
      */
+    // protected function queueExport(BaseExport $export, string $format, Request $request)
+    // {
+    //     $userId = auth()->id();
+    //     $fileName = $export->getFilename($format);
+
+    //     // Store export request in database
+    //     $exportRecord = Export::create([
+    //         'user_id' => $userId,
+    //         'file_name' => $fileName,
+    //         'format' => $format,
+    //         'filters' => $request->input('filters', []),
+    //         'status' => 'pending',
+    //     ]);
+
+    //     // Dispatch job with allOnQueue for full pipeline consistency
+    //     ProcessExportJob::dispatch($export, $fileName, $format, $exportRecord->id)
+    //         ->onQueue('exports')
+    //         ->allOnQueue('exports') // Critical for multi-job exports
+    //         ->delay(now()->addSeconds(5));
+
+    //     return response()->json([
+    //         'message' => 'Export queued successfully',
+    //         'export_id' => $exportRecord->id,
+    //         'status_url' => route('admin.exports.status', $exportRecord->id),
+    //     ]);
+    //     // return redirect()->route('admin.exports.index')
+    //     // ->with('success_title', 'Queued!')
+    //     // ->with('success', "Export queued successfully (Export id: {$exportRecord->id})");
+    // }
     protected function queueExport(BaseExport $export, string $format, Request $request)
     {
         $userId = auth()->id();
         $fileName = $export->getFilename($format);
 
-        // Store export request in database
         $exportRecord = Export::create([
             'user_id' => $userId,
             'file_name' => $fileName,
@@ -65,22 +93,19 @@ class ExportService
             'status' => 'pending',
         ]);
 
-        // Dispatch job with allOnQueue for full pipeline consistency
+        // Add semicolon at the end
         ProcessExportJob::dispatch($export, $fileName, $format, $exportRecord->id)
             ->onQueue('exports')
-            ->allOnQueue('exports') // Critical for multi-job exports
-            ->delay(now()->addSeconds(5));
+            ->allOnQueue('exports')
+            ->delay(now()->addSeconds(5)); // ← Semicolon here!
 
-        return response()->json([
-            'message' => 'Export queued successfully',
-            'export_id' => $exportRecord->id,
-            'status_url' => route('admin.exports.status', $exportRecord->id),
-        ]);
-        // return redirect()->route('admin.exports.index')
-        // ->with('success_title', 'Queued!')
-        // ->with('success', "Export queued successfully (Export id: {$exportRecord->id})");
+        return redirect()->route('admin.exports.index');
+        // return response()->json([
+        //     'message' => 'Export queued successfully',
+        //     'export_id' => $exportRecord->id,
+        //     'status_url' => route('admin.exports.status', $exportRecord->id),
+        // ]);
     }
-
     /**
      * Store export to disk (for email attachments, etc.)
      */

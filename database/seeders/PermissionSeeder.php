@@ -3,14 +3,11 @@
 namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
-use Carbon\Carbon;
-use App\Models\User;
-use App\Models\Module;
-use App\Models\RoleModel;
 use Illuminate\Support\Facades\DB;
-use Spatie\Permission\Models\Role;
-use Spatie\Permission\Models\Permission;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use App\Models\{Module, RoleModel, User};
+use Carbon\Carbon;
+use Spatie\Permission\Models\{Permission, Role};
 
 class PermissionSeeder extends Seeder
 {
@@ -19,7 +16,7 @@ class PermissionSeeder extends Seeder
         $modules = Module::whereNull('parent_id')->with('subModules')->get();
 
         $super_admin = Role::where('name', 'Super Admin')->first();
-        $employee_role = Role::where('name', 'Employee')->first();
+        $admin_role = Role::where('name', 'Admin')->first();
 
         DB::beginTransaction();
 
@@ -54,7 +51,7 @@ class PermissionSeeder extends Seeder
                     if ($module->name == 'HR') {
                         $hr_admin->givePermissionTo($permissions);
                     }  elseif ($module->name == 'Employee') {
-                        $employee_role->givePermissionTo($permissions);
+                        $admin_role->givePermissionTo($permissions);
                     }
                 }
             }

@@ -29,5 +29,20 @@ class AdminSeeder extends Seeder
 
         $superAdmin->assignRole($superAdmin_role);
         // AuthJob::dispatch($superAdmin);
+
+        // Admin User and Role
+
+        $Admin_role = Role::create([
+            'name' => 'Admin',
+            // 'display_name' => 'Super Admin'
+        ]);
+
+        $Admin = User::create([
+            'name' => 'test Admin',
+            'email' => 'test@gmail.com',
+            'password' => Hash::make('testuser'),
+        ]);
+        $Admin->assignRole($Admin_role);
+
     }
 }

@@ -156,10 +156,19 @@ return [
     | such as Memcached. You may define your connection settings here.
     |
     */
-
+    // config/database.php
+// 'redis' => [
+//     'client' => env('REDIS_CLIENT', 'predis'),
+//     'default' => [
+//         'host' => env('REDIS_HOST', '127.0.0.1'),
+//         'password' => env('REDIS_PASSWORD', null),
+//         'port' => env('REDIS_PORT', 6379),
+//         'database' => 0, // Redis database number (0-15)
+//     ],
+// ],
     'redis' => [
 
-        'client' => env('REDIS_CLIENT', 'phpredis'),
+        'client' => env('REDIS_CLIENT', 'predis'),
 
         'options' => [
             'cluster' => env('REDIS_CLUSTER', 'redis'),

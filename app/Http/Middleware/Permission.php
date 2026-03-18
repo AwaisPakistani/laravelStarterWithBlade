@@ -15,20 +15,34 @@ class Permission
      *
      * @param  \Closure(\Illuminate\Http\Request): (\Symfony\Component\HttpFoundation\Response)  $next
      */
-    public function handle(Request $request, Closure $next, $permission = null, $guard = null): Response
+    // public function handle(Request $request, Closure $next, $permission = null, $guard = null): Response
+    // {
+    //     // return $next($request);
+    //     $authGuard = app('auth')->guard($guard);
+    //     if ($authGuard->guest()) {
+    //         throw UnauthorizedException::notLoggedIn();
+    //     }
+    //     $permission = $request->route()->getName();
+
+    //     // return ($authGuard->user()->hasRole('Super Admin')  || $authGuard->user()->haspermission($permission) ? $next($request)  :  throw UnauthorizedException::forPermissions(explode(",",$permission)));
+
+    //     if ($authGuard->user()->hasRole('Super Admin')  || $authGuard->user()->haspermission($permission)) {
+    //         return $next($request);
+    //     }
+    //     // return redirect(route('admin.unauthorized'));
+    //     return abort(403);
+    // }
+
+    public function handle($request, Closure $next, $permission = null, $guard = null)
     {
-        // return $next($request);
         $authGuard = app('auth')->guard($guard);
         if ($authGuard->guest()) {
             throw UnauthorizedException::notLoggedIn();
         }
         $permission = $request->route()->getName();
+        // dd($permission);
+        return ($authGuard->user()->hasRole('Super Admin')  || $authGuard->user()->haspermission($permission) ? $next($request)  :  throw UnauthorizedException::forPermissions(explode(",",$permission)));
 
-        // return ($authGuard->user()->hasRole('Super Admin')  || $authGuard->user()->haspermission($permission) ? $next($request)  :  throw UnauthorizedException::forPermissions(explode(",",$permission)));
 
-        if ($authGuard->user()->hasRole('Super Admin')  || $authGuard->user()->haspermission($permission)) {
-            return $next($request);
-        }
-        return redirect(route('admin.unauthorized'));
     }
 }

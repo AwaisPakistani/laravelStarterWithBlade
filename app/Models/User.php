@@ -6,13 +6,9 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Database\Eloquent\{Builder, SoftDeletes};
+use App\Traits\{ScopeTrait, creator, updator};
 use Spatie\Permission\Traits\HasRoles;
-use App\Traits\ScopeTrait;
-use App\Traits\creator;
-use App\Traits\updator;
-// use Laravel\Sanctum\HasApiTokens;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletes;
 
 class User extends Authenticatable
 {

@@ -8,8 +8,8 @@ class PostSeeder extends Seeder
 {
     public function run()
     {
-        $userSuperAdmin = User::where('name','Super Admin')->first('id');
-        $userNidaAdmin = User::where('name','Nida Admin')->first('id');
+        $userSuperAdmin = User::where('name','Super Admin')->first();
+        $Admin = User::where('name','test Admin')->first();
 
          $posts = [
             [
@@ -26,12 +26,12 @@ class PostSeeder extends Seeder
             [
                 'title' => 'post one Nida', //superadmin Module
                 'description' => 'lorem ipsum lorem ipsumlorem ipsumlorem ipsumlorem ipsumlorem ipsum', //superadmin Module
-                'created_by' => $userNidaAdmin->id, //superadmin Module
+                'created_by' => $Admin->id, //superadmin Module
             ],
             [
                 'title' => 'post two Nida', //superadmin Module
                 'description' => 'lorem ipsum lorem ipsumlorem ipsumlorem ipsumlorem ipsumlorem ipsum', //superadmin Module
-                'created_by' => $userNidaAdmin->id, //superadmin Module
+                'created_by' => $Admin->id, //superadmin Module
             ],
 
 
